@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClipWise AI — Viral Clip Extractor</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --surface2: #1c1c27;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --accent: #7c5cfc;
+    --accent2: #fc5c8a;
+    --accent3: #5cfcc4;
+    --text: #f0eff8;
+    --muted: rgba(240,239,248,0.45);
+    --success: #5cfcc4;
+    --warning: #fcb95c;
+    --font-head: 'Syne', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-head);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 36px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(124,92,252,0.07) 0%, transparent 100%);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+
+  .logo { display: flex; align-items: center; gap: 12px; }
+
+  .logo-icon {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+
+  .logo-text {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, var(--text), rgba(240,239,248,0.65));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .logo-sub {
+    font-size: 10px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .status-pill {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(92,252,196,0.08);
+    border: 1px solid rgba(92,252,196,0.2);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: var(--success);
+    font-family: var(--font-mono);
+    letter-spacing: 0.05em;
+  }
+
+  .status-dot {
+    width: 7px; height: 7px;
+    background: var(--success);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+  /* LAYOUT */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 36px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 20px 0 8px;
+  }
+
+  .hero-title {
+    font-size: 40px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, var(--text) 0%, rgba(124,92,252,0.85) 60%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 15px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    letter-spacing: 0.02em;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 5px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 9px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: var(--font-head);
+    color: var(--muted);
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .tab:hover { color: var(--text); background: rgba(255,255,255,0.04); }
+
+  .tab.active {
+    color: var(--text);
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+  }
+
+  /* PANELS */
+  .panel { display: flex; flex-direction: column; gap: 20px; }
+  .panel.hidden { display: none; }
+
+  /* UPLOAD */
+  .upload-zone {
+    border: 1.5px dashed var(--border2);
+    border-radius: 16px;
+    padding: 44px 28px;
+    text-align: center;
+    background: var(--surface);
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .upload-zone::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(124,92,252,0.1) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .upload-zone:hover {
+    border-color: var(--accent);
+    background: rgba(124,92,252,0.04);
+  }
+
+  .upload-zone.dragging {
+    border-color: var(--accent3);
+    background: rgba(92,252,196,0.04);
+  }
+
+  .upload-icon {
+    width: 56px; height: 56px;
+    background: rgba(124,92,252,0.12);
+    border: 1.5px solid rgba(124,92,252,0.25);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px;
+    margin: 0 auto 16px;
+  }
+
+  .upload-title {
+    font-size: 17px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+
+  .upload-sub {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    margin-bottom: 20px;
+  }
+
+  .fmt-tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+
+  .fmt-tag {
+    background: rgba(124,92,252,0.12);
+    border: 1px solid rgba(124,92,252,0.3);
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 11px;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  /* DIVIDER */
+  .divider {
+    display: flex; align-items: center; gap: 14px;
+    color: var(--muted);
+    font-size: 12px;
+    font-family: var(--font-mono);
+    letter-spacing: 0.06em;
+  }
+
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* INPUTS */
+  .input-section { display: flex; flex-direction: column; gap: 8px; }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-family: var(--font-mono);
+  }
+
+  textarea {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    padding: 16px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    resize: vertical;
+    min-height: 160px;
+    outline: none;
+    transition: border-color 0.2s;
+    line-height: 1.65;
+  }
+
+  textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(124,92,252,0.12); }
+  textarea::placeholder { color: rgba(240,239,248,0.25); }
+
+  /* CONTROLS */
+  .controls-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+  .control-group { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 130px; }
+
+  select {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 9px;
+    padding: 9px 14px;
+    color: var(--text);
+    font-family: var(--font-head);
+    font-size: 13px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+
+  select:focus { border-color: var(--accent); }
+
+  /* ANALYZE BUTTON */
+  .btn-analyze {
+    background: linear-gradient(135deg, var(--accent) 0%, #a07cff 100%);
+    border: none;
+    border-radius: 11px;
+    padding: 12px 32px;
+    color: white;
+    font-family: var(--font-head);
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 8px;
+    letter-spacing: 0.02em;
+    transition: all 0.2s;
+    white-space: nowrap;
+    box-shadow: 0 4px 20px rgba(124,92,252,0.3);
+  }
+
+  .btn-analyze:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(124,92,252,0.45); }
+  .btn-analyze:active { transform: translateY(0); }
+  .btn-analyze:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  /* PROGRESS */
+  .progress-wrap { display: none; flex-direction: column; gap: 10px; }
+  .progress-wrap.active { display: flex; }
+
+  .progress-bar {
+    background: var(--surface2);
+    border-radius: 8px;
+    height: 5px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3), var(--accent));
+    background-size: 300% 100%;
+    border-radius: 8px;
+    animation: progress-anim 2s linear infinite;
+    width: 100%;
+  }
+
+  @keyframes progress-anim { 0%{background-position:0%} 100%{background-position:300%} }
+
+  .progress-text {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .progress-spinner {
+    width: 14px; height: 14px;
+    border: 2px solid var(--border2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* RESULTS PANEL */
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .results-title { font-size: 20px; font-weight: 800; letter-spacing: -0.4px; }
+
+  .results-stats {
+    display: flex; gap: 12px; flex-wrap: wrap;
+  }
+
+  .stat-pill {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    color: var(--muted);
+  }
+
+  .stat-pill span { color: var(--text); font-weight: 500; }
+
+  /* CLIP CARD */
+  .clip-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.15s;
+    animation: slideUp 0.4s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes slideUp {
+    from { opacity:0; transform:translateY(16px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  .clip-card:hover { border-color: rgba(124,92,252,0.3); transform: translateY(-2px); }
+
+  .clip-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, transparent 100%);
+  }
+
+  .clip-rank {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    font-weight: 800;
+    color: white;
+    flex-shrink: 0;
+    box-shadow: 0 2px 10px rgba(124,92,252,0.4);
+  }
+
+  .clip-title-group { flex: 1; }
+
+  .clip-title {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .clip-ts {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  .clip-dur {
+    background: rgba(124,92,252,0.12);
+    border: 1px solid rgba(124,92,252,0.25);
+    border-radius: 5px;
+    padding: 2px 8px;
+    font-size: 11px;
+  }
+
+  .clip-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 7px;
+  }
+
+  .cat-badge {
+    padding: 4px 11px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .cat-insight    { background:rgba(124,92,252,0.15); color:#a07cff; border:1px solid rgba(124,92,252,0.25); }
+  .cat-education  { background:rgba(92,252,196,0.1);  color:var(--success); border:1px solid rgba(92,252,196,0.2); }
+  .cat-entertainment { background:rgba(252,92,138,0.1); color:var(--accent2); border:1px solid rgba(252,92,138,0.2); }
+  .cat-controversy{ background:rgba(252,185,92,0.1);  color:var(--warning); border:1px solid rgba(252,185,92,0.2); }
+  .cat-motivation { background:rgba(92,196,252,0.1);  color:#5cc4fc; border:1px solid rgba(92,196,252,0.2); }
+
+  .virality-row { display:flex; align-items:center; gap:7px; }
+  .virality-label { font-size:11px; color:var(--muted); font-family:var(--font-mono); }
+  .virality-track { width:64px; height:4px; background:var(--border2); border-radius:3px; overflow:hidden; }
+  .virality-fill { height:100%; border-radius:3px; background:linear-gradient(90deg,var(--accent),var(--accent2)); }
+
+  .clip-body {
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .clip-field { display: flex; flex-direction: column; gap: 5px; }
+
+  .field-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: var(--font-mono);
+  }
+
+  .hook-text {
+    background: rgba(124,92,252,0.07);
+    border-left: 2.5px solid var(--accent);
+    padding: 12px 16px;
+    border-radius: 0 10px 10px 0;
+    font-size: 14px;
+    font-style: italic;
+    color: rgba(240,239,248,0.88);
+    line-height: 1.6;
+  }
+
+  .why-text {
+    font-size: 14px;
+    color: rgba(240,239,248,0.7);
+    line-height: 1.6;
+  }
+
+  .caption-text {
+    background: rgba(92,252,196,0.05);
+    border: 1px solid rgba(92,252,196,0.15);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-family: var(--font-mono);
+    color: rgba(240,239,248,0.75);
+    line-height: 1.65;
+  }
+
+  .clip-footer {
+    padding: 12px 20px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    background: rgba(255,255,255,0.01);
+  }
+
+  .btn-sm {
+    background: none;
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 7px 16px;
+    color: var(--muted);
+    font-family: var(--font-head);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-sm:hover { color: var(--text); border-color: rgba(255,255,255,0.28); background: rgba(255,255,255,0.04); }
+  .btn-sm.accent { border-color: rgba(124,92,252,0.4); color: #a07cff; }
+  .btn-sm.accent:hover { background: rgba(124,92,252,0.1); border-color: var(--accent); color: var(--accent); }
+
+  /* EXPORT BAR */
+  .export-bar {
+    display: none;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 14px;
+    padding: 16px 20px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .export-bar.visible { display: flex; }
+  .export-info { font-size: 13px; color: var(--muted); font-family: var(--font-mono); }
+  .export-info strong { color: var(--text); }
+  .export-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  /* EMPTY STATE */
+  .empty {
+    text-align: center;
+    padding: 64px 20px;
+    color: var(--muted);
+  }
+
+  .empty-icon { font-size: 48px; margin-bottom: 16px; }
+  .empty-title { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .empty-sub { font-size: 13px; font-family: var(--font-mono); }
+
+  /* API KEY BANNER */
+  .api-banner {
+    background: rgba(252,185,92,0.08);
+    border: 1px solid rgba(252,185,92,0.25);
+    border-radius: 12px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 13px;
+    color: rgba(240,239,248,0.8);
+    line-height: 1.55;
+  }
+
+  .api-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+  .api-key-row { display:flex; gap:8px; margin-top:10px; }
+
+  input[type="password"], input[type="text"] {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 8px 14px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input:focus { border-color: var(--accent); }
+  input::placeholder { color: var(--muted); }
+
+  .btn-save-key {
+    background: rgba(252,185,92,0.15);
+    border: 1px solid rgba(252,185,92,0.3);
+    border-radius: 8px;
+    padding: 8px 16px;
+    color: var(--warning);
+    font-family: var(--font-head);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+
+  .btn-save-key:hover { background: rgba(252,185,92,0.22); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    .header { padding: 14px 18px; }
+    .container { padding: 20px 14px; }
+    .hero-title { font-size: 28px; }
+    .controls-row { flex-direction: column; }
+    .btn-analyze { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">
+    <div class="logo-icon">✂️</div>
+    <div>
+      <div class="logo-text">ClipWise AI</div>
+      <div class="logo-sub">Viral Moment Extractor</div>
+    </div>
+  </div>
+  <div class="status-pill">
+    <div class="status-dot"></div>
+    AI READY
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="hero">
+    <div class="hero-title">Find clips that go viral</div>
+    <div class="hero-sub">Paste any transcript → AI extracts your best shareable moments</div>
+  </div>
+
+  <!-- API KEY BANNER -->
+  <div class="api-banner" id="apiBanner">
+    <div class="api-icon">🔑</div>
+    <div style="flex:1">
+      <strong style="color:var(--warning)">Enter your Anthropic API key to get started.</strong>
+      Your key is stored only in this browser session and never sent anywhere except Anthropic's API.
+      <div class="api-key-row">
+        <input type="password" id="apiKeyInput" placeholder="sk-ant-api03-..." />
+        <button class="btn-save-key" onclick="saveKey()">Save Key</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('input')">📝 Input</button>
+    <button class="tab" onclick="switchTab('results')">🎬 Results <span id="clipBadge" style="display:none;background:var(--accent);color:white;border-radius:10px;padding:1px 8px;font-size:11px;margin-left:4px"></span></button>
+  </div>
+
+  <!-- INPUT PANEL -->
+  <div class="panel" id="panel-input">
+
+    <div class="upload-zone"
+      id="dropZone"
+      onclick="document.getElementById('fileInput').click()"
+      ondragover="handleDragOver(event)"
+      ondragleave="handleDragLeave(event)"
+      ondrop="handleDrop(event)">
+      <input type="file" id="fileInput" style="display:none" accept=".txt,.srt,.vtt" onchange="handleFile(this)">
+      <div class="upload-icon">📂</div>
+      <div class="upload-title">Drop a transcript file here</div>
+      <div class="upload-sub">or click to browse</div>
+      <div class="fmt-tags">
+        <span class="fmt-tag">.TXT</span>
+        <span class="fmt-tag">.SRT</span>
+        <span class="fmt-tag">.VTT</span>
+        <span class="fmt-tag">Plain text</span>
+      </div>
+    </div>
+
+    <div class="divider">or paste manually below</div>
+
+    <div class="input-section">
+      <label class="section-label">Transcript (with or without timestamps)</label>
+      <textarea id="transcriptInput" placeholder="[00:00:00] Welcome to the show. Today we're diving into something that could completely change the way you think about content creation...
+[00:00:18] The biggest mistake most creators make is chasing trends instead of building authority.
+[00:01:05] I learned this the hard way after three years of posting daily with almost no growth...
+[00:02:30] Until I made one shift — and everything changed within 60 days."></textarea>
+    </div>
+
+    <div class="controls-row">
+      <div class="control-group">
+        <span class="section-label">Content Type</span>
+        <select id="contentType">
+          <option value="podcast">Podcast</option>
+          <option value="interview">Interview</option>
+          <option value="livestream">Livestream</option>
+          <option value="talk">Talk / Keynote</option>
+          <option value="debate">Debate</option>
+          <option value="tutorial">Tutorial</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <span class="section-label">Target Clip Length</span>
+        <select id="clipLength">
+          <option value="15-30">15–30 seconds</option>
+          <option value="30-60" selected>30–60 seconds</option>
+          <option value="60-90">60–90 seconds</option>
+          <option value="any">Any length</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <span class="section-label">Max Clips</span>
+        <select id="maxClips">
+          <option value="3">3 clips</option>
+          <option value="5" selected>5 clips</option>
+          <option value="8">8 clips</option>
+          <option value="10">10 clips</option>
+        </select>
+      </div>
+      <button class="btn-analyze" id="analyzeBtn" onclick="analyzeTranscript()">
+        ✂️ Extract Clips
+      </button>
+    </div>
+
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-bar"><div class="progress-fill"></div></div>
+      <div class="progress-text">
+        <div class="progress-spinner"></div>
+        <span id="progressText">Analyzing transcript for viral moments...</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RESULTS PANEL -->
+  <div class="panel hidden" id="panel-results">
+
+    <div class="empty" id="emptyState">
+      <div class="empty-icon">🎬</div>
+      <div class="empty-title">No clips extracted yet</div>
+      <div class="empty-sub">Go to Input tab → paste transcript → hit Extract Clips</div>
+    </div>
+
+    <div id="resultsContainer" style="display:none; flex-direction:column; gap:18px;"></div>
+
+    <div class="export-bar" id="exportBar">
+      <div class="export-info">
+        <strong id="clipCount">0</strong> clips found · ready to export
+      </div>
+      <div class="export-btns">
+        <button class="btn-sm" onclick="copyJSON()">Copy JSON</button>
+        <button class="btn-sm" onclick="exportMD()">Export Markdown</button>
+        <button class="btn-sm accent" onclick="copyAll()">Copy All Captions</button>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  let apiKey = '';
+  let currentClips = [];
+
+  function saveKey() {
+    const val = document.getElementById('apiKeyInput').value.trim();
+    if (!val.startsWith('sk-')) {
+      alert('That doesn\'t look like a valid Anthropic API key. It should start with "sk-ant-..."');
+      return;
+    }
+    apiKey = val;
+    document.getElementById('apiBanner').style.display = 'none';
+    showToast('API key saved for this session ✓');
+  }
+
+  function switchTab(tab) {
+    document.querySelectorAll('.tab').forEach((t, i) => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+    if (tab === 'input') {
+      document.querySelectorAll('.tab')[0].classList.add('active');
+      document.getElementById('panel-input').classList.remove('hidden');
+    } else {
+      document.querySelectorAll('.tab')[1].classList.add('active');
+      document.getElementById('panel-results').classList.remove('hidden');
+    }
+  }
+
+  function handleDragOver(e) {
+    e.preventDefault();
+    document.getElementById('dropZone').classList.add('dragging');
+  }
+
+  function handleDragLeave(e) {
+    document.getElementById('dropZone').classList.remove('dragging');
+  }
+
+  function handleDrop(e) {
+    e.preventDefault();
+    document.getElementById('dropZone').classList.remove('dragging');
+    const file = e.dataTransfer.files[0];
+    if (file) readFile(file);
+  }
+
+  function handleFile(input) {
+    if (input.files[0]) readFile(input.files[0]);
+  }
+
+  function readFile(file) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById('transcriptInput').value = e.target.result;
+      showToast('File loaded: ' + file.name);
+    };
+    reader.readAsText(file);
+  }
+
+  async function analyzeTranscript() {
+    const transcript = document.getElementById('transcriptInput').value.trim();
+    if (!transcript) { alert('Please paste a transcript first!'); return; }
+    if (!apiKey) { alert('Please enter your Anthropic API key at the top of the page first.'); return; }
+
+    const contentType = document.getElementById('contentType').value;
+    const clipLength = document.getElementById('clipLength').value;
+    const maxClips = document.getElementById('maxClips').value;
+
+    setLoading(true);
+
+    const msgs = [
+      'Scanning for emotional peaks...',
+      'Identifying strong hook moments...',
+      'Finding bold statements...',
+      'Scoring virality potential...',
+      'Finalizing clip selection...'
+    ];
+    let mi = 0;
+    const cycle = setInterval(() => {
+      mi = (mi + 1) % msgs.length;
+      document.getElementById('progressText').textContent = msgs[mi];
+    }, 1800);
+
+    const systemPrompt = `You are an elite social media content strategist and viral clip extractor.
+Analyze the transcript and identify the top ${maxClips} most shareable, high-impact clip moments for a ${contentType}.
+Target clip duration: ${clipLength} seconds.
+
+Return ONLY a valid JSON array. No markdown, no backticks, no explanation. Pure JSON only.
+Each object must have exactly these fields:
+- "rank": number (1 = highest virality)
+- "title": string (compelling 5-8 word headline)
+- "start": string (timestamp like "00:01:23" — estimate if not given)
+- "end": string (timestamp like "00:01:55" — estimate if not given)
+- "duration_sec": number
+- "hook": string (the powerful first 1-2 sentences that open the clip)
+- "why": string (brief reason this works: emotion, insight, controversy, etc.)
+- "caption": string (social media caption with 2-3 relevant hashtags)
+- "category": one of: "insight", "education", "entertainment", "controversy", "motivation"
+- "virality_score": number 1-10
+
+Prioritize: strong hooks, standalone context, emotional peaks, bold opinions, actionable tips, storytelling moments.
+Avoid: filler content, low-energy segments, segments requiring outside context.`;
+
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+          'anthropic-version': '2023-06-01'
+        },
+        body: JSON.stringify({
+          model: 'claude-opus-4-6',
+          max_tokens: 4096,
+          system: systemPrompt,
+          messages: [{
+            role: 'user',
+            content: `Extract the top ${maxClips} viral clips from this ${contentType} transcript:\n\n${transcript.slice(0, 12000)}`
+          }]
+        })
+      });
+
+      clearInterval(cycle);
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error?.message || 'API error ' + res.status);
+      }
+
+      const data = await res.json();
+      let raw = (data.content || []).map(b => b.text || '').join('');
+      raw = raw.replace(/```json|```/g, '').trim();
+
+      let clips;
+      try {
+        clips = JSON.parse(raw);
+        if (!Array.isArray(clips)) clips = [clips];
+      } catch (e) {
+        const match = raw.match(/\[[\s\S]*\]/);
+        clips = match ? JSON.parse(match[0]) : [];
+      }
+
+      currentClips = clips;
+      renderResults(clips);
+      switchTab('results');
+
+    } catch (err) {
+      clearInterval(cycle);
+      alert('Error: ' + err.message);
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function setLoading(on) {
+    document.getElementById('analyzeBtn').disabled = on;
+    document.getElementById('progressWrap').classList.toggle('active', on);
+    if (on) document.getElementById('progressText').textContent = 'Analyzing transcript for viral moments...';
+  }
+
+  function renderResults(clips) {
+    const container = document.getElementById('resultsContainer');
+    const empty = document.getElementById('emptyState');
+    const exportBar = document.getElementById('exportBar');
+    const badge = document.getElementById('clipBadge');
+
+    if (!clips || clips.length === 0) {
+      empty.style.display = 'block';
+      container.style.display = 'none';
+      exportBar.classList.remove('visible');
+      return;
+    }
+
+    empty.style.display = 'none';
+    container.style.display = 'flex';
+    exportBar.classList.add('visible');
+    document.getElementById('clipCount').textContent = clips.length;
+    badge.style.display = 'inline';
+    badge.textContent = clips.length;
+
+    container.innerHTML = clips.map((clip, i) => {
+      const cat = clip.category || 'insight';
+      const score = clip.virality_score || 7;
+      return `
+      <div class="clip-card" style="animation-delay:${i * 0.1}s">
+        <div class="clip-header">
+          <div class="clip-rank">${clip.rank || i + 1}</div>
+          <div class="clip-title-group">
+            <div class="clip-title">${escHtml(clip.title || 'Untitled Clip')}</div>
+            <div class="clip-ts">
+              <span>${clip.start || '—'}</span>
+              <span style="color:var(--muted);font-size:10px">▶</span>
+              <span>${clip.end || '—'}</span>
+              <span class="clip-dur">${clip.duration_sec || '?'}s</span>
+            </div>
+          </div>
+          <div class="clip-meta">
+            <span class="cat-badge cat-${cat}">${cat}</span>
+            <div class="virality-row">
+              <span class="virality-label">${score}/10</span>
+              <div class="virality-track"><div class="virality-fill" style="width:${score * 10}%"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="clip-body">
+          <div class="clip-field">
+            <span class="field-label">🎣 Hook</span>
+            <div class="hook-text">${escHtml(clip.hook || '—')}</div>
+          </div>
+          <div class="clip-field">
+            <span class="field-label">💡 Why It Works</span>
+            <div class="why-text">${escHtml(clip.why || '—')}</div>
+          </div>
+          <div class="clip-field">
+            <span class="field-label">📱 Suggested Caption</span>
+            <div class="caption-text">${escHtml(clip.caption || '—')}</div>
+          </div>
+        </div>
+        <div class="clip-footer">
+          <button class="btn-sm" onclick="copyDetails(${i})">Copy Details</button>
+          <button class="btn-sm accent" onclick="copyCaption(${i}, this)">Copy Caption ↗</button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function escHtml(s) {
+    return String(s)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+
+  function copyCaption(i, btn) {
+    navigator.clipboard.writeText(currentClips[i]?.caption || '').then(() => {
+      btn.textContent = 'Copied! ✓';
+      setTimeout(() => btn.textContent = 'Copy Caption ↗', 2000);
+    });
+  }
+
+  function copyDetails(i) {
+    const c = currentClips[i];
+    const text = `CLIP #${c.rank}: ${c.title}\nTimestamps: ${c.start} → ${c.end} (${c.duration_sec}s)\nCategory: ${c.category} | Virality: ${c.virality_score}/10\n\nHOOK:\n${c.hook}\n\nWHY IT WORKS:\n${c.why}\n\nCAPTION:\n${c.caption}`;
+    navigator.clipboard.writeText(text).then(() => showToast('Clip details copied!'));
+  }
+
+  function copyAll() {
+    const text = currentClips.map(c => c.caption).join('\n\n---\n\n');
+    navigator.clipboard.writeText(text).then(() => showToast('All captions copied!'));
+  }
+
+  function copyJSON() {
+    navigator.clipboard.writeText(JSON.stringify(currentClips, null, 2))
+      .then(() => showToast('JSON copied to clipboard!'));
+  }
+
+  function exportMD() {
+    const md = `# ClipWise AI — Extracted Clips\n_Generated: ${new Date().toLocaleString()}_\n\n` +
+      currentClips.map(c =>
+        `## Clip #${c.rank}: ${c.title}\n**Timestamps:** ${c.start} → ${c.end} (${c.duration_sec}s)  \n**Category:** ${c.category} | **Virality Score:** ${c.virality_score}/10\n\n**Hook:**\n> ${c.hook}\n\n**Why It Works:**  \n${c.why}\n\n**Caption:**\n\`\`\`\n${c.caption}\n\`\`\`\n\n---`
+      ).join('\n\n');
+    const blob = new Blob([md], { type: 'text/markdown' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'clipwise-clips.md';
+    a.click();
+    showToast('Markdown exported!');
+  }
+
+  function showToast(msg) {
+    const t = document.createElement('div');
+    t.textContent = msg;
+    Object.assign(t.style, {
+      position:'fixed', bottom:'24px', right:'24px', zIndex:'9999',
+      background:'var(--surface2)', border:'1px solid var(--border2)',
+      borderRadius:'10px', padding:'10px 18px',
+      color:'var(--text)', fontSize:'13px', fontFamily:'var(--font-mono)',
+      boxShadow:'0 8px 24px rgba(0,0,0,0.4)',
+      animation:'slideUp 0.3s ease forwards'
+    });
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 3000);
+  }
+</script>
+</body>
+</html>
