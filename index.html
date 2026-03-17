@@ -3,200 +3,237 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ClipWise AI — Viral Clip Extractor</title>
+<title>ClipWise AI</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c27;
-  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --bg:#0a0a0f;--surface:#13131a;--surface2:#1c1c27;--surface3:#22222f;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--border3:rgba(255,255,255,0.22);
   --accent:#7c5cfc;--accent2:#fc5c8a;--accent3:#5cfcc4;
-  --text:#f0eff8;--muted:rgba(240,239,248,0.45);
-  --success:#5cfcc4;--warning:#fcb95c;--danger:#fc5c5c;
+  --text:#f0eff8;--muted:rgba(240,239,248,0.45);--muted2:rgba(240,239,248,0.25);
+  --success:#5cfcc4;--warning:#fcb95c;--danger:#fc5c5c;--info:#5cb8fc;
   --fh:'Syne',sans-serif;--fm:'DM Mono',monospace;
 }
 body{background:var(--bg);color:var(--text);font-family:var(--fh);min-height:100vh}
 
-/* HEADER */
-.header{display:flex;align-items:center;justify-content:space-between;padding:18px 32px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(124,92,252,.07) 0%,transparent 100%);position:sticky;top:0;z-index:100;backdrop-filter:blur(14px)}
-.logo{display:flex;align-items:center;gap:12px}
-.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.logo-text{font-size:20px;font-weight:800;letter-spacing:-.5px;background:linear-gradient(90deg,var(--text),rgba(240,239,248,.6));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+/* ── HEADER ── */
+.header{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(124,92,252,.08),transparent);position:sticky;top:0;z-index:200;backdrop-filter:blur(16px)}
+.logo{display:flex;align-items:center;gap:11px}
+.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.logo-text{font-size:19px;font-weight:800;letter-spacing:-.5px;background:linear-gradient(90deg,var(--text),rgba(240,239,248,.55));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .logo-sub{font-size:10px;color:var(--muted);font-family:var(--fm);letter-spacing:.1em}
-.hbadge{display:flex;align-items:center;gap:6px;background:rgba(92,252,196,.08);border:1px solid rgba(92,252,196,.2);border-radius:20px;padding:5px 14px;font-size:12px;color:var(--success);font-family:var(--fm)}
-.dot{width:7px;height:7px;background:var(--success);border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hbadge{display:flex;align-items:center;gap:6px;background:rgba(92,252,196,.07);border:1px solid rgba(92,252,196,.18);border-radius:20px;padding:5px 13px;font-size:11px;color:var(--success);font-family:var(--fm)}
+.dot{width:6px;height:6px;background:var(--success);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* LAYOUT */
-.container{max-width:900px;margin:0 auto;padding:32px 20px;display:flex;flex-direction:column;gap:24px}
-.hero{text-align:center;padding:10px 0}
-.hero-title{font-size:36px;font-weight:800;letter-spacing:-1.2px;line-height:1.1;margin-bottom:10px;background:linear-gradient(135deg,var(--text) 0%,rgba(124,92,252,.9) 55%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:14px;color:var(--muted);font-family:var(--fm)}
+/* ── LAYOUT ── */
+.wrap{max-width:880px;margin:0 auto;padding:28px 18px;display:flex;flex-direction:column;gap:22px}
 
-/* TABS */
-.tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:5px}
-.tab{flex:1;padding:9px 14px;font-size:13px;font-weight:700;font-family:var(--fh);color:var(--muted);border:none;background:none;cursor:pointer;border-radius:8px;transition:all .2s;letter-spacing:.02em;white-space:nowrap}
+/* ── HERO ── */
+.hero{text-align:center;padding:8px 0}
+.hero h1{font-size:34px;font-weight:800;letter-spacing:-1.2px;line-height:1.1;margin-bottom:9px;background:linear-gradient(135deg,var(--text),rgba(124,92,252,.9) 55%,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:13px;color:var(--muted);font-family:var(--fm)}
+
+/* ── TABS ── */
+.tabs{display:flex;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:4px}
+.tab{flex:1;padding:8px 12px;font-size:13px;font-weight:700;font-family:var(--fh);color:var(--muted);border:none;background:none;cursor:pointer;border-radius:8px;transition:all .2s;white-space:nowrap}
 .tab:hover{color:var(--text);background:rgba(255,255,255,.04)}
 .tab.active{color:var(--text);background:var(--surface2);border:1px solid var(--border2)}
 
-/* PANEL */
-.panel{display:flex;flex-direction:column;gap:20px}
+/* ── PANELS ── */
+.panel{display:flex;flex-direction:column;gap:18px}
 .panel.hidden{display:none}
 
-/* SOURCE SELECTOR */
-.source-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.source-card{background:var(--surface);border:1.5px solid var(--border2);border-radius:14px;padding:18px 14px;text-align:center;cursor:pointer;transition:all .22s;display:flex;flex-direction:column;align-items:center;gap:8px}
-.source-card:hover{border-color:var(--accent);background:rgba(124,92,252,.04)}
-.source-card.active{border-color:var(--accent);background:rgba(124,92,252,.08);box-shadow:0 0 0 3px rgba(124,92,252,.12)}
-.source-icon{font-size:26px}
-.source-label{font-size:13px;font-weight:800;letter-spacing:-.2px}
-.source-sub{font-size:11px;color:var(--muted);font-family:var(--fm)}
+/* ── SOURCE CARDS ── */
+.src-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.src-card{background:var(--surface);border:1.5px solid var(--border2);border-radius:14px;padding:16px 12px;text-align:center;cursor:pointer;transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:7px;user-select:none}
+.src-card:hover{border-color:var(--accent);background:rgba(124,92,252,.04)}
+.src-card.active{border-color:var(--accent);background:rgba(124,92,252,.09);box-shadow:0 0 0 3px rgba(124,92,252,.11)}
+.src-icon{font-size:24px}
+.src-label{font-size:13px;font-weight:800}
+.src-sub{font-size:11px;color:var(--muted);font-family:var(--fm)}
 
-/* INPUT ZONES */
-.input-zone{display:none}
-.input-zone.active{display:flex;flex-direction:column;gap:14px}
+/* ── ZONES ── */
+.zone{display:none;flex-direction:column;gap:14px}
+.zone.active{display:flex}
 
-/* URL input */
-.url-row{display:flex;gap:10px;align-items:stretch}
-.url-input{flex:1;background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px 16px;color:var(--text);font-family:var(--fm);font-size:13px;outline:none;transition:border-color .2s}
-.url-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.1)}
-.url-input::placeholder{color:rgba(240,239,248,.22)}
-.btn-fetch{background:linear-gradient(135deg,var(--accent),#a07cff);border:none;border-radius:10px;padding:12px 22px;color:#fff;font-family:var(--fh);font-size:13px;font-weight:800;cursor:pointer;white-space:nowrap;transition:all .2s;display:flex;align-items:center;gap:7px}
-.btn-fetch:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(124,92,252,.4)}
-.btn-fetch:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+/* ── INPUT ELEMENTS ── */
+.row{display:flex;gap:9px;align-items:stretch}
+.url-in{flex:1;background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:11px 15px;color:var(--text);font-family:var(--fm);font-size:13px;outline:none;transition:border-color .2s}
+.url-in:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.09)}
+.url-in::placeholder{color:var(--muted2)}
 
-/* Video drop zone */
-.video-drop{border:1.5px dashed var(--border2);border-radius:16px;padding:36px 24px;text-align:center;background:var(--surface);cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
-.video-drop::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(124,92,252,.09) 0%,transparent 65%);pointer-events:none}
-.video-drop:hover,.video-drop.drag{border-color:var(--accent);background:rgba(124,92,252,.04)}
-.vd-icon{width:52px;height:52px;background:rgba(124,92,252,.12);border:1.5px solid rgba(124,92,252,.25);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 12px}
-.vd-title{font-size:15px;font-weight:800;margin-bottom:5px}
-.vd-sub{font-size:12px;color:var(--muted);font-family:var(--fm);margin-bottom:14px}
-.fmt-tags{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
-.fmt-tag{background:rgba(124,92,252,.12);border:1px solid rgba(124,92,252,.3);border-radius:6px;padding:3px 10px;font-size:11px;color:var(--accent);font-family:var(--fm)}
+textarea{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:15px;color:var(--text);font-family:var(--fm);font-size:13px;resize:vertical;min-height:140px;outline:none;transition:border-color .2s;line-height:1.65}
+textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.09)}
+textarea::placeholder{color:var(--muted2)}
 
-/* Video preview */
-.video-preview{background:var(--surface);border:1px solid var(--border2);border-radius:14px;overflow:hidden;display:none}
-.video-preview.visible{display:block}
-.video-preview video,.video-preview iframe{width:100%;border-radius:13px;display:block;max-height:320px}
-.preview-info{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.preview-title{font-size:13px;font-weight:700;color:var(--text)}
-.preview-meta{font-size:12px;color:var(--muted);font-family:var(--fm)}
-.btn-clear{background:none;border:1px solid var(--border2);border-radius:7px;padding:5px 12px;color:var(--muted);font-size:12px;font-family:var(--fh);font-weight:700;cursor:pointer;transition:all .2s}
-.btn-clear:hover{color:var(--danger);border-color:rgba(252,92,92,.4)}
-
-/* Transcript box */
-.transcript-box{background:var(--surface);border:1px solid var(--border2);border-radius:14px;overflow:hidden;display:none}
-.transcript-box.visible{display:block}
-.tb-header{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02)}
-.tb-title{font-size:12px;font-weight:700;color:var(--muted);font-family:var(--fm);letter-spacing:.06em;text-transform:uppercase}
-.tb-actions{display:flex;gap:7px}
-textarea.tb-content{width:100%;background:transparent;border:none;padding:14px 16px;color:var(--text);font-family:var(--fm);font-size:13px;resize:vertical;min-height:140px;max-height:280px;outline:none;line-height:1.65}
-textarea.tb-content::placeholder{color:rgba(240,239,248,.22)}
-
-/* Manual textarea */
-textarea.plain{width:100%;background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:16px;color:var(--text);font-family:var(--fm);font-size:13px;resize:vertical;min-height:160px;outline:none;transition:border-color .2s;line-height:1.65}
-textarea.plain:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,92,252,.1)}
-textarea.plain::placeholder{color:rgba(240,239,248,.22)}
-
-/* Section label */
-.slabel{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;font-family:var(--fm)}
-
-/* Info banner */
-.info-banner{background:rgba(124,92,252,.07);border:1px solid rgba(124,92,252,.2);border-radius:11px;padding:12px 16px;font-size:13px;color:rgba(240,239,248,.75);font-family:var(--fm);line-height:1.6;display:flex;gap:10px;align-items:flex-start}
-.info-banner.warn{background:rgba(252,185,92,.07);border-color:rgba(252,185,92,.25);color:rgba(252,185,92,.9)}
-.info-banner.success{background:rgba(92,252,196,.07);border-color:rgba(92,252,196,.25);color:rgba(92,252,196,.9)}
-.ib-icon{font-size:16px;flex-shrink:0;margin-top:1px}
-
-/* CONTROLS */
-.controls-row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
-.cgroup{display:flex;flex-direction:column;gap:6px;flex:1;min-width:130px}
-select{background:var(--surface);border:1px solid var(--border2);border-radius:9px;padding:9px 12px;color:var(--text);font-family:var(--fh);font-size:13px;outline:none;cursor:pointer;transition:border-color .2s}
+select{background:var(--surface);border:1px solid var(--border2);border-radius:9px;padding:9px 12px;color:var(--text);font-family:var(--fh);font-size:13px;outline:none;cursor:pointer}
 select:focus{border-color:var(--accent)}
 
-.btn-analyze{background:linear-gradient(135deg,var(--accent),#a07cff);border:none;border-radius:11px;padding:11px 28px;color:#fff;font-family:var(--fh);font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px;letter-spacing:.02em;transition:all .2s;white-space:nowrap;box-shadow:0 4px 18px rgba(124,92,252,.3)}
-.btn-analyze:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(124,92,252,.45)}
-.btn-analyze:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:7px;border:none;border-radius:10px;padding:10px 22px;font-family:var(--fh);font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;white-space:nowrap;letter-spacing:.02em}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#a07cff);color:#fff;box-shadow:0 4px 16px rgba(124,92,252,.28)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 7px 22px rgba(124,92,252,.42)}
+.btn-primary:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-ghost{background:none;border:1px solid var(--border2);color:var(--muted)}
+.btn-ghost:hover{color:var(--text);border-color:var(--border3);background:rgba(255,255,255,.04)}
+.btn-success{background:rgba(92,252,196,.12);border:1px solid rgba(92,252,196,.25);color:var(--success)}
+.btn-success:hover{background:rgba(92,252,196,.2)}
+.btn-danger{background:rgba(252,92,92,.08);border:1px solid rgba(252,92,92,.22);color:var(--danger)}
+.btn-danger:hover{background:rgba(252,92,92,.16)}
+.btn-warn{background:rgba(252,185,92,.1);border:1px solid rgba(252,185,92,.25);color:var(--warning)}
+.btn-warn:hover{background:rgba(252,185,92,.18)}
+.btn-info{background:rgba(92,184,252,.1);border:1px solid rgba(92,184,252,.25);color:var(--info)}
+.btn-info:hover{background:rgba(92,184,252,.18)}
+.btn-sm{padding:6px 13px;font-size:12px;border-radius:8px}
+.btn-accent{border:1px solid rgba(124,92,252,.4);color:#a07cff;background:none}
+.btn-accent:hover{background:rgba(124,92,252,.1);border-color:var(--accent);color:var(--accent)}
 
-/* PROGRESS */
-.progress-wrap{display:none;flex-direction:column;gap:10px}
-.progress-wrap.on{display:flex}
-.progress-bar{background:var(--surface2);border-radius:8px;height:5px;overflow:hidden}
-.progress-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3),var(--accent));background-size:300% 100%;animation:sh 2s linear infinite;width:100%}
+.btn-big{padding:12px 30px;font-size:14px;border-radius:11px;box-shadow:0 4px 18px rgba(124,92,252,.3)}
+.btn-big:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(124,92,252,.45)}
+
+/* ── VIDEO PLAYER ── */
+.player-wrap{background:var(--surface);border:1px solid var(--border2);border-radius:14px;overflow:hidden;display:none}
+.player-wrap.show{display:block}
+video,.yt-frame{width:100%;display:block;max-height:300px;border-radius:13px 13px 0 0}
+.yt-frame{height:280px;border:none}
+.player-meta{padding:11px 16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;border-top:1px solid var(--border)}
+.pm-title{font-size:13px;font-weight:700}
+.pm-sub{font-size:11px;color:var(--muted);font-family:var(--fm);margin-top:2px}
+
+/* ── TRANSCRIPT PANEL ── */
+.tx-panel{background:var(--surface);border:1px solid var(--border2);border-radius:14px;overflow:hidden;display:none}
+.tx-panel.show{display:block}
+.tx-head{display:flex;align-items:center;justify-content:space-between;padding:10px 15px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02)}
+.tx-label{font-size:11px;font-weight:700;color:var(--muted);font-family:var(--fm);letter-spacing:.08em;text-transform:uppercase;display:flex;align-items:center;gap:7px}
+.tx-actions{display:flex;gap:6px}
+.tx-area{width:100%;background:transparent;border:none;padding:14px 15px;color:var(--text);font-family:var(--fm);font-size:12.5px;resize:vertical;min-height:130px;max-height:260px;outline:none;line-height:1.7}
+.tx-area::placeholder{color:var(--muted2)}
+.tx-footer{padding:9px 15px;border-top:1px solid var(--border);background:rgba(255,255,255,.01);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.tx-count{font-size:11px;color:var(--muted);font-family:var(--fm)}
+
+/* ── TRANSCRIBE STEPS ── */
+.steps{display:flex;flex-direction:column;gap:10px}
+.step{background:var(--surface);border:1px solid var(--border2);border-radius:12px;padding:14px 16px;display:flex;align-items:flex-start;gap:13px}
+.step-num{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0;margin-top:1px}
+.step-body{flex:1}
+.step-title{font-size:13px;font-weight:800;margin-bottom:4px}
+.step-desc{font-size:12px;color:var(--muted);font-family:var(--fm);line-height:1.6}
+.step-actions{margin-top:9px;display:flex;gap:7px;flex-wrap:wrap}
+
+/* ── STATUS PILL ── */
+.status-pill{display:inline-flex;align-items:center;gap:6px;border-radius:20px;padding:4px 12px;font-size:11px;font-family:var(--fm);font-weight:500}
+.sp-idle{background:rgba(255,255,255,.05);border:1px solid var(--border2);color:var(--muted)}
+.sp-working{background:rgba(124,92,252,.1);border:1px solid rgba(124,92,252,.25);color:#a07cff}
+.sp-done{background:rgba(92,252,196,.1);border:1px solid rgba(92,252,196,.2);color:var(--success)}
+.sp-err{background:rgba(252,92,92,.08);border:1px solid rgba(252,92,92,.2);color:var(--danger)}
+
+/* ── BANNERS ── */
+.banner{border-radius:11px;padding:12px 15px;font-size:13px;line-height:1.6;display:flex;gap:10px;align-items:flex-start}
+.banner a{color:var(--accent)}
+.b-purple{background:rgba(124,92,252,.07);border:1px solid rgba(124,92,252,.2);color:rgba(240,239,248,.8)}
+.b-warn{background:rgba(252,185,92,.07);border:1px solid rgba(252,185,92,.22);color:rgba(252,185,92,.9)}
+.b-success{background:rgba(92,252,196,.07);border:1px solid rgba(92,252,196,.2);color:rgba(92,252,196,.9)}
+.b-info{background:rgba(92,184,252,.07);border:1px solid rgba(92,184,252,.2);color:rgba(92,184,252,.9)}
+.b-danger{background:rgba(252,92,92,.07);border:1px solid rgba(252,92,92,.2);color:rgba(252,92,92,.9)}
+.bi{font-size:15px;flex-shrink:0;margin-top:1px}
+
+/* ── DIVIDER ── */
+.div{display:flex;align-items:center;gap:11px;color:var(--muted);font-size:11px;font-family:var(--fm)}
+.div::before,.div::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── CONTROLS ROW ── */
+.ctrl-row{display:flex;gap:11px;flex-wrap:wrap;align-items:flex-end}
+.cg{display:flex;flex-direction:column;gap:6px;flex:1;min-width:125px}
+.slabel{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;font-family:var(--fm)}
+
+/* ── PROGRESS ── */
+.prog-wrap{display:none;flex-direction:column;gap:9px}
+.prog-wrap.on{display:flex}
+.prog-bar{background:var(--surface2);border-radius:8px;height:5px;overflow:hidden}
+.prog-fill{height:100%;border-radius:8px;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--accent3),var(--accent));background-size:300% 100%;animation:sh 2s linear infinite;width:100%}
 @keyframes sh{0%{background-position:0%}100%{background-position:300%}}
-.progress-text{font-size:13px;color:var(--muted);font-family:var(--fm);display:flex;align-items:center;gap:8px}
-.spinner{width:14px;height:14px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
-@keyframes spin{to{transform:rotate(360deg)}}
+.prog-text{font-size:13px;color:var(--muted);font-family:var(--fm);display:flex;align-items:center;gap:8px}
+.spin{width:13px;height:13px;border:2px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:rot .7s linear infinite;flex-shrink:0}
+@keyframes rot{to{transform:rotate(360deg)}}
 
-/* RESULTS */
-.clip-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:border-color .2s,transform .15s;animation:sUp .4s ease forwards;opacity:0}
-@keyframes sUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.clip-card:hover{border-color:rgba(124,92,252,.3);transform:translateY(-2px)}
-.clip-header{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:16px 20px 14px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(255,255,255,.025) 0%,transparent 100%)}
-.clip-rank{width:30px;height:30px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
-.clip-title-g{flex:1}
+/* ── CLIP CARDS ── */
+.results{display:none;flex-direction:column;gap:15px}
+.results.show{display:flex}
+.clip{background:var(--surface);border:1px solid var(--border);border-radius:15px;overflow:hidden;transition:border-color .2s,transform .15s;animation:up .4s ease forwards;opacity:0}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.clip:hover{border-color:rgba(124,92,252,.3);transform:translateY(-2px)}
+.clip-head{display:flex;align-items:flex-start;justify-content:space-between;gap:13px;padding:15px 19px 13px;border-bottom:1px solid var(--border);background:linear-gradient(180deg,rgba(255,255,255,.025),transparent)}
+.clip-rank{width:29px;height:29px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
+.clip-tg{flex:1}
 .clip-title{font-size:15px;font-weight:800;letter-spacing:-.3px;margin-bottom:5px;line-height:1.3}
-.clip-ts{display:flex;align-items:center;gap:7px;font-family:var(--fm);font-size:12px;color:var(--accent)}
-.clip-dur{background:rgba(124,92,252,.12);border:1px solid rgba(124,92,252,.25);border-radius:5px;padding:2px 7px;font-size:11px}
-.clip-meta{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
-.cat-badge{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;font-family:var(--fm);letter-spacing:.05em;text-transform:uppercase}
-.cat-insight{background:rgba(124,92,252,.15);color:#a07cff;border:1px solid rgba(124,92,252,.25)}
-.cat-education{background:rgba(92,252,196,.1);color:var(--success);border:1px solid rgba(92,252,196,.2)}
+.clip-ts{display:flex;align-items:center;gap:7px;font-family:var(--fm);font-size:11px;color:var(--accent)}
+.clip-dur{background:rgba(124,92,252,.12);border:1px solid rgba(124,92,252,.22);border-radius:4px;padding:2px 7px}
+.clip-mt{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.cat{padding:3px 9px;border-radius:6px;font-size:10px;font-weight:700;font-family:var(--fm);letter-spacing:.05em;text-transform:uppercase}
+.cat-insight   {background:rgba(124,92,252,.15);color:#a07cff;border:1px solid rgba(124,92,252,.25)}
+.cat-education {background:rgba(92,252,196,.1);color:var(--success);border:1px solid rgba(92,252,196,.2)}
 .cat-entertainment{background:rgba(252,92,138,.1);color:var(--accent2);border:1px solid rgba(252,92,138,.2)}
 .cat-controversy{background:rgba(252,185,92,.1);color:var(--warning);border:1px solid rgba(252,185,92,.2)}
 .cat-motivation{background:rgba(92,196,252,.1);color:#5cc4fc;border:1px solid rgba(92,196,252,.2)}
-.v-row{display:flex;align-items:center;gap:7px}
-.v-label{font-size:11px;color:var(--muted);font-family:var(--fm)}
-.v-track{width:60px;height:4px;background:var(--border2);border-radius:3px;overflow:hidden}
-.v-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
-.clip-body{padding:16px 20px;display:flex;flex-direction:column;gap:13px}
-.clip-field{display:flex;flex-direction:column;gap:5px}
-.field-label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;font-family:var(--fm)}
-.hook-text{background:rgba(124,92,252,.07);border-left:2.5px solid var(--accent);padding:11px 15px;border-radius:0 9px 9px 0;font-size:14px;font-style:italic;color:rgba(240,239,248,.88);line-height:1.6}
-.why-text{font-size:13px;color:rgba(240,239,248,.7);line-height:1.6}
-.caption-text{background:rgba(92,252,196,.05);border:1px solid rgba(92,252,196,.15);border-radius:9px;padding:11px 15px;font-size:13px;font-family:var(--fm);color:rgba(240,239,248,.75);line-height:1.65}
-.clip-footer{padding:11px 20px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.vrow{display:flex;align-items:center;gap:6px}
+.vl{font-size:10px;color:var(--muted);font-family:var(--fm)}
+.vt{width:55px;height:3px;background:var(--border2);border-radius:3px;overflow:hidden}
+.vf{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.clip-body{padding:15px 19px;display:flex;flex-direction:column;gap:12px}
+.cf{display:flex;flex-direction:column;gap:4px}
+.fl{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;font-family:var(--fm)}
+.hook{background:rgba(124,92,252,.07);border-left:2px solid var(--accent);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13px;font-style:italic;color:rgba(240,239,248,.88);line-height:1.6}
+.why{font-size:13px;color:rgba(240,239,248,.68);line-height:1.6}
+.caption{background:rgba(92,252,196,.05);border:1px solid rgba(92,252,196,.14);border-radius:8px;padding:10px 14px;font-size:12px;font-family:var(--fm);color:rgba(240,239,248,.72);line-height:1.65}
+.clip-foot{padding:10px 19px;border-top:1px solid var(--border);display:flex;gap:7px;justify-content:flex-end;flex-wrap:wrap}
 
-/* BUTTONS */
-.btn-sm{background:none;border:1px solid var(--border2);border-radius:8px;padding:6px 15px;color:var(--muted);font-family:var(--fh);font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.02em}
-.btn-sm:hover{color:var(--text);border-color:rgba(255,255,255,.26);background:rgba(255,255,255,.04)}
-.btn-sm.acc{border-color:rgba(124,92,252,.4);color:#a07cff}
-.btn-sm.acc:hover{background:rgba(124,92,252,.1);border-color:var(--accent);color:var(--accent)}
-.btn-sm.red{border-color:rgba(252,92,92,.3);color:rgba(252,92,92,.7)}
-.btn-sm.red:hover{background:rgba(252,92,92,.08);border-color:var(--danger);color:var(--danger)}
+/* ── EXPORT BAR ── */
+.exp-bar{display:none;background:var(--surface2);border:1px solid var(--border2);border-radius:13px;padding:13px 19px;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.exp-bar.on{display:flex}
+.exp-info{font-size:13px;color:var(--muted);font-family:var(--fm)}
+.exp-info strong{color:var(--text)}
+.exp-btns{display:flex;gap:8px;flex-wrap:wrap}
 
-/* EXPORT BAR */
-.export-bar{display:none;background:var(--surface2);border:1px solid var(--border2);border-radius:14px;padding:14px 20px;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
-.export-bar.on{display:flex}
-.export-info{font-size:13px;color:var(--muted);font-family:var(--fm)}
-.export-info strong{color:var(--text)}
-.export-btns{display:flex;gap:9px;flex-wrap:wrap}
-
-/* EMPTY / ERROR */
-.empty{text-align:center;padding:60px 20px;color:var(--muted)}
-.empty-icon{font-size:44px;margin-bottom:14px}
-.empty-title{font-size:17px;font-weight:700;color:var(--text);margin-bottom:7px}
+/* ── EMPTY / ERROR ── */
+.empty{text-align:center;padding:56px 20px;color:var(--muted)}
+.empty-icon{font-size:42px;margin-bottom:13px}
+.empty-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
 .empty-sub{font-size:13px;font-family:var(--fm)}
-.error-box{background:rgba(252,92,92,.07);border:1px solid rgba(252,92,92,.25);border-radius:12px;padding:14px 18px;font-size:13px;color:rgba(252,92,92,.9);font-family:var(--fm);display:none;line-height:1.6}
-.error-box.on{display:block}
+.err-box{background:rgba(252,92,92,.07);border:1px solid rgba(252,92,92,.22);border-radius:11px;padding:13px 16px;font-size:13px;color:rgba(252,92,92,.9);font-family:var(--fm);display:none;line-height:1.6}
+.err-box.on{display:block}
 
-/* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;z-index:9999;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:10px 18px;color:var(--text);font-size:13px;font-family:var(--fm);box-shadow:0 8px 24px rgba(0,0,0,.5);animation:sUp .3s ease}
+/* ── TOAST ── */
+.toast{position:fixed;bottom:22px;right:22px;z-index:9999;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:9px 16px;color:var(--text);font-size:12px;font-family:var(--fm);box-shadow:0 8px 24px rgba(0,0,0,.5);animation:up .3s ease;pointer-events:none}
 
-/* DIVIDER */
-.divider{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:12px;font-family:var(--fm)}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+/* ── RECORDING INDICATOR ── */
+.rec-indicator{display:none;align-items:center;gap:8px;padding:10px 15px;background:rgba(252,92,92,.08);border:1px solid rgba(252,92,92,.2);border-radius:10px;font-size:12px;color:var(--danger);font-family:var(--fm)}
+.rec-indicator.on{display:flex}
+.rec-dot{width:8px;height:8px;background:var(--danger);border-radius:50%;animation:pulse .8s infinite}
 
-::-webkit-scrollbar{width:5px} ::-webkit-scrollbar-track{background:transparent} ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
-@media(max-width:640px){
-  .header{padding:14px 16px}
-  .container{padding:18px 12px}
-  .hero-title{font-size:26px}
-  .source-grid{grid-template-columns:1fr 1fr 1fr}
-  .controls-row{flex-direction:column}
-  .btn-analyze{width:100%;justify-content:center}
-  .source-card{padding:14px 8px}
-  .source-label{font-size:12px}
+/* ── ASSEMBLYAI SECTION ── */
+.aai-section{background:var(--surface);border:1px solid var(--border2);border-radius:13px;overflow:hidden}
+.aai-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none}
+.aai-head-left{display:flex;align-items:center;gap:10px}
+.aai-title{font-size:13px;font-weight:800}
+.aai-sub{font-size:11px;color:var(--muted);font-family:var(--fm)}
+.aai-body{display:none;padding:14px 16px;border-top:1px solid var(--border);flex-direction:column;gap:12px}
+.aai-body.open{display:flex}
+.key-row{display:flex;gap:9px}
+.key-in{flex:1;background:var(--surface2);border:1px solid var(--border2);border-radius:9px;padding:9px 13px;color:var(--text);font-family:var(--fm);font-size:13px;outline:none;transition:border-color .2s}
+.key-in:focus{border-color:var(--accent)}
+.key-in::placeholder{color:var(--muted2)}
+.chevron{font-size:12px;color:var(--muted);transition:transform .2s}
+.chevron.open{transform:rotate(180deg)}
+
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+@media(max-width:620px){
+  .header{padding:13px 15px}.wrap{padding:16px 11px}
+  .hero h1{font-size:24px}.src-grid{grid-template-columns:1fr 1fr 1fr}
+  .ctrl-row{flex-direction:column}.btn-big{width:100%;justify-content:center}
+  .src-label{font-size:11px}.src-sub{display:none}
 }
 </style>
 </head>
@@ -207,155 +244,246 @@ select:focus{border-color:var(--accent)}
     <div class="logo-icon">✂️</div>
     <div>
       <div class="logo-text">ClipWise AI</div>
-      <div class="logo-sub">Viral Moment Extractor</div>
+      <div class="logo-sub">Auto-Transcribe · Extract · Clip</div>
     </div>
   </div>
   <div class="hbadge"><div class="dot"></div>FREE · NO API KEY</div>
 </div>
 
-<div class="container">
+<div class="wrap">
   <div class="hero">
-    <div class="hero-title">Find clips that go viral</div>
-    <div class="hero-sub">video file · youtube link · or paste transcript → AI extracts your best moments</div>
+    <h1>Find clips that go viral</h1>
+    <p>auto-transcribe from youtube, video files, or microphone → AI extracts your best moments</p>
   </div>
 
-  <!-- MAIN TABS -->
   <div class="tabs">
     <button class="tab active" id="tab-input"   onclick="switchTab('input')">📥 Input</button>
     <button class="tab"        id="tab-results" onclick="switchTab('results')">
       🎬 Results
-      <span id="clipBadge" style="display:none;background:var(--accent);color:#fff;border-radius:10px;padding:1px 8px;font-size:11px;margin-left:5px"></span>
+      <span id="clipBadge" style="display:none;background:var(--accent);color:#fff;border-radius:10px;padding:1px 7px;font-size:11px;margin-left:4px"></span>
     </button>
   </div>
 
-  <!-- INPUT PANEL -->
+  <!-- ═══════════════════════════════════════
+       INPUT PANEL
+  ═══════════════════════════════════════ -->
   <div class="panel" id="panel-input">
 
-    <!-- SOURCE SELECTOR -->
     <div>
-      <div class="slabel" style="margin-bottom:10px">Choose your source</div>
-      <div class="source-grid">
-        <div class="source-card active" id="src-youtube" onclick="setSource('youtube')">
-          <div class="source-icon">▶️</div>
-          <div class="source-label">YouTube Link</div>
-          <div class="source-sub">Paste any URL</div>
+      <div class="slabel" style="margin-bottom:9px">Choose source</div>
+      <div class="src-grid">
+        <div class="src-card active" id="src-yt"    onclick="setSrc('yt')">
+          <div class="src-icon">▶️</div>
+          <div class="src-label">YouTube</div>
+          <div class="src-sub">Auto-fetch transcript</div>
         </div>
-        <div class="source-card" id="src-video" onclick="setSource('video')">
-          <div class="source-icon">🎥</div>
-          <div class="source-label">Video / Audio</div>
-          <div class="source-sub">MP4, MP3, WAV…</div>
+        <div class="src-card" id="src-file" onclick="setSrc('file')">
+          <div class="src-icon">🎥</div>
+          <div class="src-label">Video / Audio</div>
+          <div class="src-sub">Upload file</div>
         </div>
-        <div class="source-card" id="src-text" onclick="setSource('text')">
-          <div class="source-icon">📝</div>
-          <div class="source-label">Transcript</div>
-          <div class="source-sub">Paste or upload</div>
+        <div class="src-card" id="src-mic"  onclick="setSrc('mic')">
+          <div class="src-icon">🎙️</div>
+          <div class="src-label">Record / Live</div>
+          <div class="src-sub">Mic transcription</div>
         </div>
       </div>
     </div>
 
-    <!-- YOUTUBE ZONE -->
-    <div class="input-zone active" id="zone-youtube">
-      <div class="url-row">
-        <input class="url-input" id="ytUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." />
-        <button class="btn-fetch" id="fetchBtn" onclick="fetchYoutube()">⚡ Load Video</button>
+    <!-- ─── YOUTUBE ZONE ─── -->
+    <div class="zone active" id="zone-yt">
+      <div class="row">
+        <input class="url-in" id="ytUrl" type="url" placeholder="https://www.youtube.com/watch?v=...  or  https://youtu.be/...">
+        <button class="btn btn-primary" id="ytBtn" onclick="loadYT()">⚡ Load &amp; Transcribe</button>
       </div>
-      <div class="info-banner" id="ytInfo" style="display:none"></div>
-      <div class="video-preview" id="ytPreview">
-        <iframe id="ytFrame" frameborder="0" allowfullscreen allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture" style="width:100%;height:300px;border-radius:13px"></iframe>
-        <div class="preview-info">
-          <div>
-            <div class="preview-title" id="ytTitle">YouTube Video</div>
-            <div class="preview-meta" id="ytMeta"></div>
-          </div>
-          <button class="btn-clear" onclick="clearSource('youtube')">✕ Clear</button>
+
+      <!-- Video embed -->
+      <div class="player-wrap" id="ytPlayer">
+        <iframe class="yt-frame" id="ytFrame" frameborder="0" allowfullscreen
+          allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"></iframe>
+        <div class="player-meta">
+          <div><div class="pm-title" id="ytVidTitle">YouTube Video</div><div class="pm-sub" id="ytVidUrl"></div></div>
+          <button class="btn btn-ghost btn-sm" onclick="clearYT()">✕ Clear</button>
         </div>
       </div>
-      <div class="transcript-box" id="ytTranscriptBox">
-        <div class="tb-header">
-          <span class="tb-title">📄 Transcript</span>
-          <div class="tb-actions">
-            <button class="btn-sm" onclick="copyTranscript()">Copy</button>
-            <button class="btn-sm red" onclick="clearTranscript('yt')">Clear</button>
+
+      <!-- Transcript -->
+      <div class="tx-panel" id="ytTxPanel">
+        <div class="tx-head">
+          <span class="tx-label">
+            <span id="ytTxStatus" class="status-pill sp-idle">⏳ Fetching…</span>
+            Transcript
+          </span>
+          <div class="tx-actions">
+            <button class="btn btn-ghost btn-sm" onclick="copyTx('yt')">Copy</button>
+            <button class="btn btn-danger btn-sm" onclick="clearTx('yt')">Clear</button>
           </div>
         </div>
-        <textarea class="tb-content" id="ytTranscript" placeholder="Transcript will appear here after loading the video...&#10;&#10;You can also paste or edit the transcript manually."></textarea>
+        <textarea class="tx-area" id="ytTx" placeholder="Transcript will appear here automatically…&#10;&#10;You can also paste or edit manually."></textarea>
+        <div class="tx-footer">
+          <span class="tx-count" id="ytTxCount">0 words</span>
+          <div style="display:flex;gap:7px">
+            <button class="btn btn-info btn-sm" onclick="retryYTTranscript()" id="ytRetryBtn" style="display:none">↺ Retry Fetch</button>
+          </div>
+        </div>
       </div>
-      <div class="info-banner warn">
-        <span class="ib-icon">💡</span>
-        <span>
-          <strong>How it works:</strong> After loading a YouTube video, you need to grab the transcript.
-          On YouTube, click <strong>…</strong> below the video → <strong>Show transcript</strong> → copy all text and paste it above.
-          Or use <strong>youtubetranscript.com</strong> — paste the URL and copy the result here.
-        </span>
+
+      <div class="banner b-purple">
+        <span class="bi">💡</span>
+        <span>Transcripts are fetched automatically. If a video has no captions, the fetch will fail — use the <strong>Video/Audio</strong> tab instead or paste the transcript manually.</span>
       </div>
     </div>
 
-    <!-- VIDEO FILE ZONE -->
-    <div class="input-zone" id="zone-video">
-      <div class="video-drop" id="videoDrop"
-        onclick="document.getElementById('videoFile').click()"
-        ondragover="dOver(event,'videoDrop')" ondragleave="dLeave('videoDrop')" ondrop="dDrop(event,'videoFile')">
-        <input type="file" id="videoFile" style="display:none" accept="video/*,audio/*,.mp4,.mp3,.wav,.m4a,.webm,.mov,.mkv,.ogg" onchange="loadVideo(this)">
-        <div class="vd-icon">🎬</div>
-        <div class="vd-title">Drop your video or audio file here</div>
-        <div class="vd-sub">or click to browse</div>
-        <div class="fmt-tags">
-          <span class="fmt-tag">MP4</span><span class="fmt-tag">MOV</span><span class="fmt-tag">WEBM</span>
-          <span class="fmt-tag">MP3</span><span class="fmt-tag">WAV</span><span class="fmt-tag">M4A</span>
+    <!-- ─── VIDEO/AUDIO FILE ZONE ─── -->
+    <div class="zone" id="zone-file">
+      <!-- Drop zone -->
+      <div id="fileDrop" style="border:1.5px dashed var(--border2);border-radius:15px;padding:36px 24px;text-align:center;background:var(--surface);cursor:pointer;transition:all .25s;position:relative;overflow:hidden"
+        onclick="document.getElementById('fileIn').click()"
+        ondragover="dOver(event,'fileDrop')" ondragleave="dLeave('fileDrop')" ondrop="dDrop(event,'fileIn')">
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(124,92,252,.09),transparent 65%);pointer-events:none"></div>
+        <input type="file" id="fileIn" style="display:none" accept="video/*,audio/*,.mp4,.mp3,.wav,.m4a,.webm,.mov,.mkv,.ogg,.flac" onchange="loadFile(this)">
+        <div style="width:50px;height:50px;background:rgba(124,92,252,.12);border:1.5px solid rgba(124,92,252,.25);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:23px;margin:0 auto 12px">🎬</div>
+        <div style="font-size:15px;font-weight:800;margin-bottom:5px">Drop your video or audio file here</div>
+        <div style="font-size:12px;color:var(--muted);font-family:var(--fm);margin-bottom:13px">or click to browse</div>
+        <div style="display:flex;gap:7px;justify-content:center;flex-wrap:wrap">
+          <span style="background:rgba(124,92,252,.12);border:1px solid rgba(124,92,252,.28);border-radius:6px;padding:3px 10px;font-size:11px;color:var(--accent);font-family:var(--fm)">MP4</span>
+          <span style="background:rgba(124,92,252,.12);border:1px solid rgba(124,92,252,.28);border-radius:6px;padding:3px 10px;font-size:11px;color:var(--accent);font-family:var(--fm)">MOV</span>
+          <span style="background:rgba(124,92,252,.12);border:1px solid rgba(124,92,252,.28);border-radius:6px;padding:3px 10px;font-size:11px;color:var(--accent);font-family:var(--fm)">WEBM</span>
+          <span style="background:rgba(124,92,252,.12);border:1px solid rgba(124,92,252,.28);border-radius:6px;padding:3px 10px;font-size:11px;color:var(--accent);font-family:var(--fm)">MP3</span>
+          <span style="background:rgba(124,92,252,.12);border:1px solid rgba(124,92,252,.28);border-radius:6px;padding:3px 10px;font-size:11px;color:var(--accent);font-family:var(--fm)">WAV</span>
+          <span style="background:rgba(124,92,252,.12);border:1px solid rgba(124,92,252,.28);border-radius:6px;padding:3px 10px;font-size:11px;color:var(--accent);font-family:var(--fm)">M4A</span>
         </div>
       </div>
-      <div class="video-preview" id="videoPreview">
-        <video id="videoPlayer" controls style="width:100%;max-height:300px;border-radius:13px;background:#000"></video>
-        <div class="preview-info">
-          <div>
-            <div class="preview-title" id="videoName">Video File</div>
-            <div class="preview-meta" id="videoMeta"></div>
+
+      <!-- Player -->
+      <div class="player-wrap" id="filePlayer">
+        <video id="vidEl" controls style="width:100%;max-height:280px;border-radius:13px 13px 0 0;background:#000"></video>
+        <div class="player-meta">
+          <div><div class="pm-title" id="fileName">File</div><div class="pm-sub" id="fileMeta"></div></div>
+          <button class="btn btn-ghost btn-sm" onclick="clearFile()">✕ Clear</button>
+        </div>
+      </div>
+
+      <!-- Transcription options -->
+      <div class="steps">
+        <!-- Option A: Web Speech (browser) -->
+        <div class="step">
+          <div class="step-num">A</div>
+          <div class="step-body">
+            <div class="step-title">🎙️ Browser Transcription (Free, instant)</div>
+            <div class="step-desc">Uses your browser's built-in speech recognition (Chrome/Edge only). Play the video — it will transcribe in real time. Works best in a quiet environment.</div>
+            <div class="step-actions">
+              <button class="btn btn-success btn-sm" id="wsStartBtn" onclick="startWebSpeech()">▶ Start Listening</button>
+              <button class="btn btn-danger btn-sm" id="wsStopBtn" onclick="stopWebSpeech()" style="display:none">■ Stop</button>
+              <span class="status-pill sp-idle" id="wsStatus">Idle</span>
+            </div>
+            <div class="rec-indicator" id="recInd">
+              <span class="rec-dot"></span> Listening — play your video now
+            </div>
           </div>
-          <button class="btn-clear" onclick="clearSource('video')">✕ Clear</button>
         </div>
-      </div>
-      <div class="info-banner warn">
-        <span class="ib-icon">⚠️</span>
-        <span>
-          <strong>Transcription:</strong> Browsers can't transcribe audio directly — you'll need to add the transcript below.
-          Use <strong>Whisper</strong> (free at <a href="https://replicate.com/openai/whisper" target="_blank" style="color:var(--accent)">replicate.com</a>), 
-          <strong>AssemblyAI</strong> free tier, or <strong>otter.ai</strong> free plan to transcribe your file first.
-        </span>
-      </div>
-      <div class="transcript-box visible" id="videoTranscriptBox">
-        <div class="tb-header">
-          <span class="tb-title">📄 Paste Transcript Here</span>
-          <div class="tb-actions">
-            <button class="btn-sm" onclick="copyTranscript()">Copy</button>
-            <button class="btn-sm red" onclick="clearTranscript('video')">Clear</button>
+
+        <!-- Option B: AssemblyAI -->
+        <div class="aai-section">
+          <div class="aai-head" onclick="toggleAAI()">
+            <div class="aai-head-left">
+              <div style="font-size:20px">🤖</div>
+              <div>
+                <div class="aai-title">Option B: AssemblyAI (300 hrs free)</div>
+                <div class="aai-sub">Best accuracy · sign up free at assemblyai.com</div>
+              </div>
+            </div>
+            <span class="chevron" id="aaiChevron">▼</span>
+          </div>
+          <div class="aai-body" id="aaiBody">
+            <div class="banner b-info">
+              <span class="bi">ℹ️</span>
+              <span>Get a free API key at <a href="https://www.assemblyai.com" target="_blank">assemblyai.com</a> — 300 hours free, no credit card needed.</span>
+            </div>
+            <div>
+              <div class="slabel" style="margin-bottom:6px">AssemblyAI API Key</div>
+              <div class="key-row">
+                <input class="key-in" id="aaiKey" type="password" placeholder="Enter your AssemblyAI key...">
+                <button class="btn btn-warn btn-sm" onclick="transcribeAAI()">🚀 Transcribe File</button>
+              </div>
+            </div>
+            <div class="banner b-warn" id="aaiBanner" style="display:none"></div>
           </div>
         </div>
-        <textarea class="tb-content" id="videoTranscript" placeholder="Paste your transcript here (with or without timestamps)...&#10;&#10;[00:00:05] Hello everyone, welcome to today's session...&#10;[00:00:18] Today we're going to talk about..."></textarea>
+
+        <!-- Option C: Paste manually -->
+        <div class="step">
+          <div class="step-num">C</div>
+          <div class="step-body">
+            <div class="step-title">📋 Paste Manually</div>
+            <div class="step-desc">Already have a transcript? Paste it below. Use <a href="https://replicate.com/openai/whisper" target="_blank" style="color:var(--accent)">Whisper on Replicate</a> (free credits) or <a href="https://otter.ai" target="_blank" style="color:var(--accent)">Otter.ai</a> for high-quality results.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transcript panel -->
+      <div class="tx-panel show" id="fileTxPanel">
+        <div class="tx-head">
+          <span class="tx-label">📄 Transcript</span>
+          <div class="tx-actions">
+            <button class="btn btn-ghost btn-sm" onclick="copyTx('file')">Copy</button>
+            <button class="btn btn-danger btn-sm" onclick="clearTx('file')">Clear</button>
+          </div>
+        </div>
+        <textarea class="tx-area" id="fileTx" placeholder="Transcript appears here after browser transcription or AssemblyAI…&#10;Or paste manually:&#10;&#10;[00:00:05] Hello everyone...&#10;[00:00:18] Today we're talking about..."></textarea>
+        <div class="tx-footer">
+          <span class="tx-count" id="fileTxCount">0 words</span>
+        </div>
       </div>
     </div>
 
-    <!-- TEXT ZONE -->
-    <div class="input-zone" id="zone-text">
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <div class="slabel">Paste transcript (with or without timestamps)</div>
-        <textarea class="plain" id="manualTranscript" placeholder="[00:00:00] Welcome to the show. Today we're diving into something that could change the way you think about building an audience...&#10;[00:00:20] The biggest mistake creators make is chasing trends instead of building real authority.&#10;[00:01:10] I learned this the hard way after years of posting with almost zero growth...&#10;[00:02:34] Then I made one shift — and everything changed within 60 days.&#10;[00:03:50] The secret is counterintuitive. Most people do the exact opposite of what works."></textarea>
+    <!-- ─── MIC / LIVE ZONE ─── -->
+    <div class="zone" id="zone-mic">
+      <div class="banner b-info">
+        <span class="bi">🎙️</span>
+        <span><strong>Live microphone transcription</strong> using your browser's built-in speech recognition. Works in Chrome and Edge. Great for recording yourself speaking, transcribing a live meeting, or playing audio near your microphone.</span>
       </div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <span class="slabel">Or upload a file:</span>
-        <label style="cursor:pointer">
-          <input type="file" id="textFile" style="display:none" accept=".txt,.srt,.vtt" onchange="loadTextFile(this)">
-          <span class="btn-sm" style="display:inline-block" onclick="document.getElementById('textFile').click()">📂 Browse .txt / .srt / .vtt</span>
-        </label>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <div class="step-title">Click Start — allow microphone access</div>
+            <div class="step-desc">Your browser will ask for mic permission. Speak clearly or play your audio source. Transcription happens in real time.</div>
+            <div class="step-actions">
+              <button class="btn btn-success" id="micStartBtn" onclick="startMic()">🎙️ Start Transcribing</button>
+              <button class="btn btn-danger" id="micStopBtn" onclick="stopMic()" style="display:none">■ Stop</button>
+              <span class="status-pill sp-idle" id="micStatus">Ready</span>
+            </div>
+            <div class="rec-indicator" id="micRecInd" style="margin-top:10px">
+              <span class="rec-dot"></span> Recording… speak or play audio near your mic
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tx-panel show" id="micTxPanel">
+        <div class="tx-head">
+          <span class="tx-label">🎙️ Live Transcript</span>
+          <div class="tx-actions">
+            <button class="btn btn-ghost btn-sm" onclick="copyTx('mic')">Copy</button>
+            <button class="btn btn-danger btn-sm" onclick="clearTx('mic')">Clear</button>
+          </div>
+        </div>
+        <textarea class="tx-area" id="micTx" placeholder="Start recording — your speech will appear here in real time…"></textarea>
+        <div class="tx-footer">
+          <span class="tx-count" id="micTxCount">0 words</span>
+        </div>
       </div>
     </div>
 
-    <!-- ERROR -->
-    <div class="error-box" id="errorBox"></div>
+    <!-- Error box -->
+    <div class="err-box" id="errBox"></div>
 
-    <!-- SETTINGS & EXTRACT -->
-    <div class="divider">extraction settings</div>
-    <div class="controls-row">
-      <div class="cgroup">
+    <!-- Settings & Extract -->
+    <div class="div">extraction settings</div>
+    <div class="ctrl-row">
+      <div class="cg">
         <span class="slabel">Content Type</span>
         <select id="contentType">
           <option value="podcast">Podcast</option>
@@ -366,65 +494,70 @@ select:focus{border-color:var(--accent)}
           <option value="tutorial">Tutorial</option>
         </select>
       </div>
-      <div class="cgroup">
+      <div class="cg">
         <span class="slabel">Clip Length</span>
         <select id="clipLength">
           <option value="15-30">15–30 sec</option>
           <option value="30-60" selected>30–60 sec</option>
           <option value="60-90">60–90 sec</option>
-          <option value="any">Any length</option>
+          <option value="any">Any</option>
         </select>
       </div>
-      <div class="cgroup">
+      <div class="cg">
         <span class="slabel">Max Clips</span>
         <select id="maxClips">
-          <option value="3">3 clips</option>
-          <option value="5" selected>5 clips</option>
-          <option value="8">8 clips</option>
-          <option value="10">10 clips</option>
+          <option value="3">3</option>
+          <option value="5" selected>5</option>
+          <option value="8">8</option>
+          <option value="10">10</option>
         </select>
       </div>
-      <button class="btn-analyze" id="analyzeBtn" onclick="analyze()">✂️ Extract Clips</button>
+      <button class="btn btn-primary btn-big" id="analyzeBtn" onclick="analyze()">✂️ Extract Clips</button>
     </div>
 
-    <div class="progress-wrap" id="progressWrap">
-      <div class="progress-bar"><div class="progress-fill"></div></div>
-      <div class="progress-text"><div class="spinner"></div><span id="progressText">Analyzing...</span></div>
+    <div class="prog-wrap" id="progWrap">
+      <div class="prog-bar"><div class="prog-fill"></div></div>
+      <div class="prog-text"><div class="spin"></div><span id="progText">Analyzing…</span></div>
     </div>
 
   </div><!-- /panel-input -->
 
-  <!-- RESULTS PANEL -->
+  <!-- ═══════════════════════════════════════
+       RESULTS PANEL
+  ═══════════════════════════════════════ -->
   <div class="panel hidden" id="panel-results">
     <div class="empty" id="emptyState">
       <div class="empty-icon">🎬</div>
       <div class="empty-title">No clips yet</div>
-      <div class="empty-sub">Go to Input → add content → hit Extract Clips</div>
+      <div class="empty-sub">Input → add content → Extract Clips</div>
     </div>
-    <div id="resultsContainer" style="display:none;flex-direction:column;gap:16px"></div>
-    <div class="export-bar" id="exportBar">
-      <div class="export-info"><strong id="clipCount">0</strong> clips identified · ready to export</div>
-      <div class="export-btns">
-        <button class="btn-sm" onclick="cpJSON()">Copy JSON</button>
-        <button class="btn-sm" onclick="expMD()">Export .MD</button>
-        <button class="btn-sm acc" onclick="cpAllCaptions()">Copy All Captions</button>
+    <div class="results" id="resultsEl"></div>
+    <div class="exp-bar" id="expBar">
+      <div class="exp-info"><strong id="clipCount">0</strong> clips · ready to export</div>
+      <div class="exp-btns">
+        <button class="btn btn-ghost btn-sm" onclick="cpJSON()">Copy JSON</button>
+        <button class="btn btn-ghost btn-sm" onclick="expMD()">Export .MD</button>
+        <button class="btn btn-accent btn-sm" onclick="cpAllCaptions()">Copy All Captions</button>
       </div>
     </div>
   </div>
 
-</div><!-- /container -->
+</div><!-- /wrap -->
 
 <script>
-/* ─────────────────────────────────────────────
+/* ══════════════════════════════════════════════
    STATE
-───────────────────────────────────────────── */
-let currentSource = 'youtube';
+══════════════════════════════════════════════ */
+let src = 'yt';
 let clips = [];
-let loadedVideoUrl = null;
+let wsRecognition = null;
+let micRecognition = null;
+let fileObjectUrl = null;
+let wsInterim = '';
 
-/* ─────────────────────────────────────────────
-   TAB / SOURCE SWITCHING
-───────────────────────────────────────────── */
+/* ══════════════════════════════════════════════
+   TABS
+══════════════════════════════════════════════ */
 function switchTab(t) {
   ['input','results'].forEach(id => {
     document.getElementById('tab-'+id).classList.toggle('active', id===t);
@@ -432,322 +565,582 @@ function switchTab(t) {
   });
 }
 
-function setSource(src) {
-  currentSource = src;
-  ['youtube','video','text'].forEach(s => {
-    document.getElementById('src-'+s).classList.toggle('active', s===src);
-    document.getElementById('zone-'+s).classList.toggle('active', s===src);
+function setSrc(s) {
+  src = s;
+  ['yt','file','mic'].forEach(id => {
+    document.getElementById('src-'+id).classList.toggle('active', id===s);
+    document.getElementById('zone-'+id).classList.toggle('active', id===s);
   });
-  hideError();
+  hideErr();
 }
 
-/* ─────────────────────────────────────────────
-   YOUTUBE
-───────────────────────────────────────────── */
-function getYouTubeId(url) {
-  const patterns = [
+/* ══════════════════════════════════════════════
+   YOUTUBE — auto-fetch transcript via multiple proxies
+══════════════════════════════════════════════ */
+function getYTId(url) {
+  const p = [
     /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/v\/)([^&\n?#]+)/,
     /youtube\.com\/shorts\/([^&\n?#]+)/
   ];
-  for (const p of patterns) { const m = url.match(p); if (m) return m[1]; }
+  for (const r of p) { const m = url.match(r); if (m) return m[1]; }
   return null;
 }
 
-function fetchYoutube() {
+async function loadYT() {
   const url = document.getElementById('ytUrl').value.trim();
-  if (!url) { showError('Please paste a YouTube URL first.'); return; }
+  if (!url) { showErr('Paste a YouTube URL first.'); return; }
+  const vid = getYTId(url);
+  if (!vid) { showErr('Not a valid YouTube URL.'); return; }
 
-  const vid = getYouTubeId(url);
-  if (!vid) { showError('That doesn\'t look like a valid YouTube URL. Try: https://www.youtube.com/watch?v=...'); return; }
+  hideErr();
+  const btn = document.getElementById('ytBtn');
+  btn.disabled = true; btn.textContent = '⏳ Loading…';
 
-  hideError();
-  // Embed the video
-  const frame = document.getElementById('ytFrame');
-  frame.src = `https://www.youtube.com/embed/${vid}?rel=0`;
-  document.getElementById('ytPreview').classList.add('visible');
-  document.getElementById('ytTranscriptBox').classList.add('visible');
-  document.getElementById('ytTitle').textContent = 'YouTube Video (ID: '+vid+')';
-  document.getElementById('ytMeta').textContent = url;
+  // Embed player
+  document.getElementById('ytFrame').src = `https://www.youtube.com/embed/${vid}?rel=0`;
+  document.getElementById('ytPlayer').classList.add('show');
+  document.getElementById('ytVidTitle').textContent = `YouTube • ${vid}`;
+  document.getElementById('ytVidUrl').textContent = url;
+  document.getElementById('ytTxPanel').classList.add('show');
+  setStatus('ytTxStatus', 'working', '⏳ Fetching transcript…');
 
-  showInfo('ytInfo', '✅ Video loaded! Now grab the transcript: click <strong>…</strong> under the video on YouTube → <strong>Show transcript</strong> → copy it and paste in the box below. Or use <a href="https://youtubetranscript.com/?v='+vid+'" target="_blank" style="color:var(--accent)">youtubetranscript.com</a> to get it instantly.', 'success');
-  document.getElementById('fetchBtn').disabled = false;
-}
+  // Try fetching transcript
+  const ok = await fetchYTTranscript(vid);
+  btn.disabled = false; btn.textContent = '⚡ Load & Transcribe';
 
-function showInfo(id, html, type='') {
-  const el = document.getElementById(id);
-  el.innerHTML = '<span class="ib-icon">'+(type==='success'?'✅':'ℹ️')+'</span><span>'+html+'</span>';
-  el.className = 'info-banner'+(type?' '+type:'');
-  el.style.display = 'flex';
-}
-
-/* ─────────────────────────────────────────────
-   VIDEO FILE
-───────────────────────────────────────────── */
-function dOver(e, id) { e.preventDefault(); document.getElementById(id).classList.add('drag'); }
-function dLeave(id)   { document.getElementById(id).classList.remove('drag'); }
-function dDrop(e, inputId) {
-  e.preventDefault();
-  document.getElementById('videoDrop').classList.remove('drag');
-  const f = e.dataTransfer.files[0];
-  if (f) processVideoFile(f);
-}
-
-function loadVideo(inp) { if (inp.files[0]) processVideoFile(inp.files[0]); }
-
-function processVideoFile(file) {
-  if (loadedVideoUrl) URL.revokeObjectURL(loadedVideoUrl);
-  loadedVideoUrl = URL.createObjectURL(file);
-  const player = document.getElementById('videoPlayer');
-  player.src = loadedVideoUrl;
-  document.getElementById('videoPreview').classList.add('visible');
-  document.getElementById('videoName').textContent = file.name;
-  document.getElementById('videoMeta').textContent = formatBytes(file.size) + ' · ' + file.type;
-  toast('Video loaded: ' + file.name);
-}
-
-function formatBytes(b) {
-  if (b < 1024) return b+' B';
-  if (b < 1048576) return (b/1024).toFixed(1)+' KB';
-  return (b/1048576).toFixed(1)+' MB';
-}
-
-/* ─────────────────────────────────────────────
-   TEXT FILE UPLOAD
-───────────────────────────────────────────── */
-function loadTextFile(inp) {
-  if (!inp.files[0]) return;
-  const r = new FileReader();
-  r.onload = e => { document.getElementById('manualTranscript').value = e.target.result; toast('File loaded: '+inp.files[0].name); };
-  r.readAsText(inp.files[0]);
-}
-
-/* ─────────────────────────────────────────────
-   CLEAR
-───────────────────────────────────────────── */
-function clearSource(src) {
-  if (src === 'youtube') {
-    document.getElementById('ytFrame').src = '';
-    document.getElementById('ytPreview').classList.remove('visible');
-    document.getElementById('ytTranscriptBox').classList.remove('visible');
-    document.getElementById('ytUrl').value = '';
-    document.getElementById('ytTranscript').value = '';
-    document.getElementById('ytInfo').style.display = 'none';
-  } else if (src === 'video') {
-    document.getElementById('videoPlayer').src = '';
-    document.getElementById('videoPreview').classList.remove('visible');
-    if (loadedVideoUrl) { URL.revokeObjectURL(loadedVideoUrl); loadedVideoUrl = null; }
-    document.getElementById('videoFile').value = '';
+  if (!ok) {
+    setStatus('ytTxStatus', 'err', '⚠️ No captions found');
+    document.getElementById('ytRetryBtn').style.display = 'inline-flex';
+    document.getElementById('ytTx').placeholder = 'Auto-fetch failed (no captions on this video).\n\nPaste the transcript manually, or switch to Video/Audio tab and use browser transcription.';
   }
 }
 
-function clearTranscript(type) {
-  if (type === 'yt') document.getElementById('ytTranscript').value = '';
-  else document.getElementById('videoTranscript').value = '';
+async function fetchYTTranscript(vid) {
+  // Try multiple free transcript proxy approaches
+  const proxies = [
+    `https://yt-transcript-api.glitch.me/transcript?videoId=${vid}`,
+    `https://api.allorigins.win/get?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${vid}`)}`,
+  ];
+
+  // Approach 1: dedicated transcript endpoint
+  try {
+    const res = await fetch(`https://yt-transcript-api.glitch.me/transcript?videoId=${vid}`, { signal: AbortSignal.timeout(8000) });
+    if (res.ok) {
+      const data = await res.json();
+      if (data && data.transcript) {
+        const text = data.transcript.map(e => e.text).join(' ');
+        setYTTranscript(text);
+        return true;
+      }
+    }
+  } catch(e) {}
+
+  // Approach 2: scrape page for caption track URL via allorigins proxy
+  try {
+    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://www.youtube.com/watch?v=${vid}`)}`, { signal: AbortSignal.timeout(10000) });
+    if (res.ok) {
+      const data = await res.json();
+      const html = data.contents || '';
+
+      // Extract caption track URL from YouTube page source
+      const captionMatch = html.match(/"captionTracks":\s*\[([^\]]+)\]/);
+      if (captionMatch) {
+        const urlMatch = captionMatch[1].match(/"baseUrl":"([^"]+)"/);
+        if (urlMatch) {
+          const captionUrl = urlMatch[1].replace(/\\u0026/g,'&').replace(/\\\//g,'/');
+          const xmlRes = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(captionUrl)}`, { signal: AbortSignal.timeout(8000) });
+          if (xmlRes.ok) {
+            const xmlData = await xmlRes.json();
+            const xml = xmlData.contents || '';
+            const text = parseXMLCaptions(xml);
+            if (text) { setYTTranscript(text); return true; }
+          }
+        }
+      }
+
+      // Try timedtext API
+      const timedMatch = html.match(/timedtext[^"]*lang=[^"&]*/);
+    }
+  } catch(e) {}
+
+  // Approach 3: direct timedtext API (auto-generated captions)
+  try {
+    const langs = ['en','en-US','en-GB','a.en'];
+    for (const lang of langs) {
+      const ttUrl = `https://www.youtube.com/api/timedtext?v=${vid}&lang=${lang}&fmt=vtt`;
+      const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(ttUrl)}`, { signal: AbortSignal.timeout(7000) });
+      if (res.ok) {
+        const data = await res.json();
+        const content = data.contents || '';
+        if (content && content.includes('-->')) {
+          const text = parseVTT(content);
+          if (text.length > 30) { setYTTranscript(text); return true; }
+        }
+      }
+    }
+  } catch(e) {}
+
+  return false;
 }
 
-function copyTranscript() {
-  const t = currentSource === 'youtube'
-    ? document.getElementById('ytTranscript').value
-    : document.getElementById('videoTranscript').value;
-  navigator.clipboard.writeText(t).then(() => toast('Transcript copied!'));
+function parseXMLCaptions(xml) {
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xml, 'text/xml');
+    const texts = doc.querySelectorAll('text');
+    if (!texts.length) return '';
+    return Array.from(texts).map(el => {
+      const start = parseFloat(el.getAttribute('start') || 0);
+      const txt = el.textContent.replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').trim();
+      return `[${toTS(start)}] ${txt}`;
+    }).join('\n');
+  } catch(e) { return ''; }
 }
 
-/* ─────────────────────────────────────────────
-   GET ACTIVE TRANSCRIPT
-───────────────────────────────────────────── */
+function parseVTT(vtt) {
+  const lines = vtt.split('\n');
+  const result = [];
+  let ts = '';
+  for (const line of lines) {
+    if (line.includes('-->')) {
+      const t = line.split('-->')[0].trim();
+      ts = t.replace(/\.\d+$/,'');
+    } else if (line.trim() && !line.startsWith('WEBVTT') && !line.match(/^\d+$/) && !line.startsWith('NOTE') && ts) {
+      const clean = line.replace(/<[^>]+>/g,'').trim();
+      if (clean) result.push(`[${ts}] ${clean}`);
+    }
+  }
+  return result.join('\n');
+}
+
+function toTS(sec) {
+  const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = Math.floor(sec%60);
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function setYTTranscript(text) {
+  const ta = document.getElementById('ytTx');
+  ta.value = text;
+  updateWordCount('ytTx','ytTxCount');
+  setStatus('ytTxStatus', 'done', '✅ Transcript ready');
+  toast('✅ Transcript fetched!');
+}
+
+function retryYTTranscript() {
+  const url = document.getElementById('ytUrl').value.trim();
+  const vid = getYTId(url);
+  if (!vid) return;
+  setStatus('ytTxStatus','working','⏳ Retrying…');
+  fetchYTTranscript(vid).then(ok => {
+    if (!ok) setStatus('ytTxStatus','err','⚠️ Still no captions');
+  });
+}
+
+function clearYT() {
+  document.getElementById('ytFrame').src='';
+  document.getElementById('ytPlayer').classList.remove('show');
+  document.getElementById('ytTxPanel').classList.remove('show');
+  document.getElementById('ytUrl').value='';
+  document.getElementById('ytTx').value='';
+  document.getElementById('ytRetryBtn').style.display='none';
+  updateWordCount('ytTx','ytTxCount');
+}
+
+/* ══════════════════════════════════════════════
+   VIDEO FILE
+══════════════════════════════════════════════ */
+function dOver(e, id) { e.preventDefault(); document.getElementById(id).style.borderColor='var(--accent)'; }
+function dLeave(id)   { document.getElementById(id).style.borderColor=''; }
+function dDrop(e, id) { e.preventDefault(); dLeave(id.replace('In','Drop')); const f=e.dataTransfer.files[0]; if(f) processFile(f); }
+
+function loadFile(inp) { if(inp.files[0]) processFile(inp.files[0]); }
+
+function processFile(file) {
+  if (fileObjectUrl) URL.revokeObjectURL(fileObjectUrl);
+  fileObjectUrl = URL.createObjectURL(file);
+  document.getElementById('vidEl').src = fileObjectUrl;
+  document.getElementById('filePlayer').classList.add('show');
+  document.getElementById('fileName').textContent = file.name;
+  document.getElementById('fileMeta').textContent = fmtBytes(file.size) + ' · ' + (file.type||'unknown');
+  toast('File loaded: ' + file.name);
+}
+
+function clearFile() {
+  document.getElementById('vidEl').src='';
+  document.getElementById('filePlayer').classList.remove('show');
+  if (fileObjectUrl) { URL.revokeObjectURL(fileObjectUrl); fileObjectUrl=null; }
+  stopWebSpeech();
+}
+
+function fmtBytes(b) { return b<1048576?(b/1024).toFixed(1)+' KB':(b/1048576).toFixed(1)+' MB'; }
+
+/* ══════════════════════════════════════════════
+   WEB SPEECH (browser, file tab)
+══════════════════════════════════════════════ */
+function startWebSpeech() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    showErr('Speech recognition not supported. Use Chrome or Edge.');
+    return;
+  }
+  wsRecognition = new SR();
+  wsRecognition.continuous = true;
+  wsRecognition.interimResults = true;
+  wsRecognition.lang = 'en-US';
+
+  const ta = document.getElementById('fileTx');
+  const base = ta.value;
+
+  wsRecognition.onresult = e => {
+    let final = '', interim = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) final += e.results[i][0].transcript + ' ';
+      else interim += e.results[i][0].transcript;
+    }
+    ta.value = base + final;
+    wsInterim = interim;
+    updateWordCount('fileTx','fileTxCount');
+  };
+
+  wsRecognition.onerror = e => {
+    setStatus('wsStatus','err','Error: '+e.error);
+    stopWebSpeech();
+  };
+
+  wsRecognition.onend = () => {
+    if (wsRecognition && wsRecognition._running) wsRecognition.start();
+  };
+
+  wsRecognition._running = true;
+  wsRecognition.start();
+  setStatus('wsStatus','working','🔴 Listening…');
+  document.getElementById('wsStartBtn').style.display='none';
+  document.getElementById('wsStopBtn').style.display='inline-flex';
+  document.getElementById('recInd').classList.add('on');
+}
+
+function stopWebSpeech() {
+  if (wsRecognition) { wsRecognition._running=false; wsRecognition.stop(); wsRecognition=null; }
+  setStatus('wsStatus','done','✅ Done');
+  document.getElementById('wsStartBtn').style.display='inline-flex';
+  document.getElementById('wsStopBtn').style.display='none';
+  document.getElementById('recInd').classList.remove('on');
+}
+
+/* ══════════════════════════════════════════════
+   MIC TRANSCRIPTION
+══════════════════════════════════════════════ */
+function startMic() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { showErr('Speech recognition requires Chrome or Edge.'); return; }
+
+  micRecognition = new SR();
+  micRecognition.continuous = true;
+  micRecognition.interimResults = true;
+  micRecognition.lang = 'en-US';
+
+  const ta = document.getElementById('micTx');
+  let accumulated = ta.value;
+
+  micRecognition.onresult = e => {
+    let final = '', interim = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) final += e.results[i][0].transcript + ' ';
+      else interim += e.results[i][0].transcript;
+    }
+    if (final) accumulated += final;
+    ta.value = accumulated + (interim ? '…'+interim : '');
+    updateWordCount('micTx','micTxCount');
+    ta.scrollTop = ta.scrollHeight;
+  };
+
+  micRecognition.onerror = e => {
+    setStatus('micStatus','err','Error: '+e.error);
+    stopMic();
+  };
+
+  micRecognition.onend = () => {
+    if (micRecognition && micRecognition._running) micRecognition.start();
+  };
+
+  micRecognition._running = true;
+  micRecognition.start();
+  setStatus('micStatus','working','🔴 Recording…');
+  document.getElementById('micStartBtn').style.display='none';
+  document.getElementById('micStopBtn').style.display='inline-flex';
+  document.getElementById('micRecInd').classList.add('on');
+}
+
+function stopMic() {
+  if (micRecognition) { micRecognition._running=false; micRecognition.stop(); micRecognition=null; }
+  setStatus('micStatus','done','✅ Done');
+  document.getElementById('micStartBtn').style.display='inline-flex';
+  document.getElementById('micStopBtn').style.display='none';
+  document.getElementById('micRecInd').classList.remove('on');
+  // Clean trailing ellipsis
+  const ta = document.getElementById('micTx');
+  ta.value = ta.value.replace(/…[^.!?\n]*$/,'').trim();
+  updateWordCount('micTx','micTxCount');
+}
+
+/* ══════════════════════════════════════════════
+   ASSEMBLYAI
+══════════════════════════════════════════════ */
+function toggleAAI() {
+  const body = document.getElementById('aaiBody');
+  const chev = document.getElementById('aaiChevron');
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+
+async function transcribeAAI() {
+  const key = document.getElementById('aaiKey').value.trim();
+  if (!key) { setAAIBanner('Enter your AssemblyAI API key first.','warn'); return; }
+
+  const fileIn = document.getElementById('fileIn');
+  if (!fileIn.files[0]) { setAAIBanner('Upload a video/audio file first.','warn'); return; }
+
+  const file = fileIn.files[0];
+  const btn = document.querySelector('[onclick="transcribeAAI()"]');
+  btn.disabled = true; btn.textContent = '⏳ Uploading…';
+  setAAIBanner('Uploading file to AssemblyAI…','info');
+
+  try {
+    // 1. Upload file
+    const uploadRes = await fetch('https://api.assemblyai.com/v2/upload', {
+      method: 'POST',
+      headers: { 'authorization': key },
+      body: file
+    });
+    if (!uploadRes.ok) throw new Error('Upload failed: ' + uploadRes.status);
+    const { upload_url } = await uploadRes.json();
+
+    // 2. Start transcription
+    btn.textContent = '⏳ Transcribing…';
+    setAAIBanner('File uploaded. Starting transcription (may take 1-3 min)…','info');
+    const txRes = await fetch('https://api.assemblyai.com/v2/transcript', {
+      method: 'POST',
+      headers: { 'authorization': key, 'content-type': 'application/json' },
+      body: JSON.stringify({ audio_url: upload_url, punctuate: true, format_text: true })
+    });
+    if (!txRes.ok) throw new Error('Transcription start failed: ' + txRes.status);
+    const { id } = await txRes.json();
+
+    // 3. Poll for result
+    let attempts = 0;
+    while (attempts < 60) {
+      await sleep(5000);
+      attempts++;
+      const poll = await fetch(`https://api.assemblyai.com/v2/transcript/${id}`, {
+        headers: { 'authorization': key }
+      });
+      const result = await poll.json();
+      setAAIBanner(`Transcribing… ${result.status} (${attempts * 5}s)`, 'info');
+
+      if (result.status === 'completed') {
+        document.getElementById('fileTx').value = result.text || '';
+        updateWordCount('fileTx','fileTxCount');
+        setAAIBanner('✅ Transcription complete!','success');
+        toast('✅ AssemblyAI transcription done!');
+        break;
+      } else if (result.status === 'error') {
+        throw new Error('AssemblyAI error: ' + result.error);
+      }
+    }
+    if (attempts >= 60) throw new Error('Transcription timed out. Try a shorter file.');
+
+  } catch(err) {
+    setAAIBanner('❌ ' + err.message, 'danger');
+  } finally {
+    btn.disabled = false; btn.textContent = '🚀 Transcribe File';
+  }
+}
+
+function setAAIBanner(msg, type) {
+  const b = document.getElementById('aaiBanner');
+  b.style.display = 'flex';
+  b.className = `banner b-${type}`;
+  b.innerHTML = `<span class="bi">${type==='success'?'✅':type==='danger'?'❌':type==='warn'?'⚠️':'ℹ️'}</span><span>${msg}</span>`;
+}
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+/* ══════════════════════════════════════════════
+   TRANSCRIPT UTILITIES
+══════════════════════════════════════════════ */
 function getTranscript() {
-  if (currentSource === 'youtube') return document.getElementById('ytTranscript').value.trim();
-  if (currentSource === 'video')   return document.getElementById('videoTranscript').value.trim();
-  if (currentSource === 'text')    return document.getElementById('manualTranscript').value.trim();
+  if (src==='yt')   return document.getElementById('ytTx').value.trim();
+  if (src==='file') return document.getElementById('fileTx').value.trim();
+  if (src==='mic')  return document.getElementById('micTx').value.trim();
   return '';
 }
 
-/* ─────────────────────────────────────────────
+function copyTx(s) {
+  const id = s==='yt'?'ytTx':s==='file'?'fileTx':'micTx';
+  navigator.clipboard.writeText(document.getElementById(id).value).then(()=>toast('Transcript copied!'));
+}
+
+function clearTx(s) {
+  const id = s==='yt'?'ytTx':s==='file'?'fileTx':'micTx';
+  const cid = s==='yt'?'ytTxCount':s==='file'?'fileTxCount':'micTxCount';
+  document.getElementById(id).value='';
+  updateWordCount(id,cid);
+}
+
+function updateWordCount(txId, countId) {
+  const txt = document.getElementById(txId).value.trim();
+  const words = txt ? txt.split(/\s+/).length : 0;
+  document.getElementById(countId).textContent = words.toLocaleString() + ' words';
+}
+
+// Auto update word counts on typing
+['ytTx','fileTx','micTx'].forEach((id,i) => {
+  const countIds = ['ytTxCount','fileTxCount','micTxCount'];
+  document.getElementById(id).addEventListener('input', () => updateWordCount(id, countIds[i]));
+});
+
+/* ══════════════════════════════════════════════
+   STATUS HELPERS
+══════════════════════════════════════════════ */
+function setStatus(id, type, text) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.className = 'status-pill ' + (type==='working'?'sp-working':type==='done'?'sp-done':type==='err'?'sp-err':'sp-idle');
+  el.textContent = text;
+}
+
+/* ══════════════════════════════════════════════
    ANALYZE
-───────────────────────────────────────────── */
+══════════════════════════════════════════════ */
 async function analyze() {
   const transcript = getTranscript();
 
   if (!transcript) {
-    if (currentSource === 'youtube') {
-      showError('Please paste the transcript in the transcript box below the video player.');
-    } else if (currentSource === 'video') {
-      showError('Please paste the transcript for your video in the transcript box. Use Whisper or AssemblyAI to transcribe first.');
-    } else {
-      showError('Please paste or upload a transcript first.');
-    }
+    const hints = { yt:'paste the transcript or use the auto-fetch above', file:'transcribe your file first (Option A, B, or C above)', mic:'start recording first' };
+    showErr('No transcript found — ' + (hints[src]||'add a transcript first') + '.');
     return;
   }
-
-  if (transcript.length < 80) {
-    showError('The transcript seems too short. Please paste more content for better results.');
-    return;
-  }
+  if (transcript.length < 60) { showErr('Transcript too short. Add more content.'); return; }
 
   const contentType = document.getElementById('contentType').value;
   const clipLength  = document.getElementById('clipLength').value;
   const maxClips    = document.getElementById('maxClips').value;
 
-  setLoading(true); hideError();
+  setLoading(true); hideErr();
 
-  const msgs = [
-    'Scanning for emotional peaks...', 'Identifying strong hooks...',
-    'Finding bold statements...', 'Scoring virality potential...', 'Finalizing clip selection...'
-  ];
+  const msgs = ['Scanning for emotional peaks…','Identifying strong hooks…','Finding bold statements…','Scoring virality potential…','Finalizing clip selection…'];
   let mi = 0;
-  const cycle = setInterval(() => {
-    document.getElementById('progressText').textContent = msgs[mi=(mi+1)%msgs.length];
-  }, 1600);
+  const cycle = setInterval(() => { document.getElementById('progText').textContent = msgs[mi=(mi+1)%msgs.length]; }, 1600);
 
   const prompt = `You are an elite social media content strategist and viral clip extractor.
-
-Analyze this ${contentType} transcript and identify the top ${maxClips} most shareable, high-impact clip moments.
+Analyze this ${contentType} transcript and extract the top ${maxClips} most shareable, high-impact clip moments.
 Target clip duration: ${clipLength} seconds.
 
-RETURN ONLY a raw JSON array. No markdown, no backticks, no explanation. Pure JSON only.
-Each object must have exactly:
-- "rank": number (1 = highest virality)
-- "title": string (compelling 5-8 word headline)
-- "start": string (timestamp like "00:01:23" — estimate if no timestamps in transcript)
-- "end": string (timestamp like "00:01:55" — estimate based on word count/pace)
-- "duration_sec": number
-- "hook": string (powerful first 1-2 sentences that open the clip)
-- "why": string (why this moment is shareable: emotion, insight, controversy, story, etc.)
-- "caption": string (social media caption with 2-3 relevant hashtags)
-- "category": one of exactly: "insight","education","entertainment","controversy","motivation"
-- "virality_score": number 1-10
+RETURN ONLY a raw JSON array. No markdown, no backticks, no explanation.
+Each object: rank(number), title(string 5-8 words), start(timestamp string), end(timestamp string), duration_sec(number), hook(string), why(string), caption(string with 2-3 hashtags), category(one of: insight/education/entertainment/controversy/motivation), virality_score(1-10).
 
 Prioritize: strong hooks, standalone context, emotional peaks, bold opinions, actionable tips, complete mini-stories.
-Avoid: filler, low-energy segments, segments needing too much outside context.
 
 TRANSCRIPT:
-${transcript.slice(0, 15000)}`;
+${transcript.slice(0,15000)}`;
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 4000,
-        messages: [{ role: 'user', content: prompt }]
-      })
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:4000, messages:[{role:'user',content:prompt}] })
     });
 
     clearInterval(cycle);
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error?.message || 'Request failed (' + res.status + ')');
-    }
+    if (!res.ok) { const e=await res.json().catch(()=>({})); throw new Error(e.error?.message||'Request failed ('+res.status+')'); }
 
     const data = await res.json();
-    let raw = (data.content || []).map(b => b.text || '').join('');
-    raw = raw.replace(/```json|```/g, '').trim();
+    let raw = (data.content||[]).map(b=>b.text||'').join('').replace(/```json|```/g,'').trim();
 
     let parsed;
-    try { parsed = JSON.parse(raw); if (!Array.isArray(parsed)) parsed = [parsed]; }
-    catch(e) { const m = raw.match(/\[[\s\S]*\]/); parsed = m ? JSON.parse(m[0]) : []; }
+    try { parsed=JSON.parse(raw); if(!Array.isArray(parsed)) parsed=[parsed]; }
+    catch(e) { const m=raw.match(/\[[\s\S]*\]/); parsed=m?JSON.parse(m[0]):[]; }
 
-    if (!parsed.length) throw new Error('No clips returned — try a longer or richer transcript.');
-
-    clips = parsed;
-    renderResults(clips);
-    switchTab('results');
+    if (!parsed.length) throw new Error('No clips returned — try a longer transcript.');
+    clips=parsed; renderResults(clips); switchTab('results');
 
   } catch(err) {
     clearInterval(cycle);
-    showError('⚠️ ' + err.message);
-  } finally {
-    setLoading(false);
-  }
+    showErr('⚠️ '+err.message);
+  } finally { setLoading(false); }
 }
 
 function setLoading(on) {
-  document.getElementById('analyzeBtn').disabled = on;
-  document.getElementById('progressWrap').classList.toggle('on', on);
-  if (on) document.getElementById('progressText').textContent = 'Analyzing transcript for viral moments...';
+  document.getElementById('analyzeBtn').disabled=on;
+  document.getElementById('progWrap').classList.toggle('on',on);
+  if(on) document.getElementById('progText').textContent='Analyzing transcript for viral moments…';
 }
 
-/* ─────────────────────────────────────────────
+/* ══════════════════════════════════════════════
    RENDER RESULTS
-───────────────────────────────────────────── */
+══════════════════════════════════════════════ */
 function renderResults(data) {
-  const container = document.getElementById('resultsContainer');
-  const empty     = document.getElementById('emptyState');
-  const bar       = document.getElementById('exportBar');
-  const badge     = document.getElementById('clipBadge');
+  const el=document.getElementById('resultsEl');
+  const empty=document.getElementById('emptyState');
+  const bar=document.getElementById('expBar');
+  const badge=document.getElementById('clipBadge');
 
-  if (!data.length) { empty.style.display='block'; container.style.display='none'; bar.classList.remove('on'); return; }
+  if (!data.length) { empty.style.display='block'; el.classList.remove('show'); bar.classList.remove('on'); return; }
+  empty.style.display='none'; el.classList.add('show'); bar.classList.add('on');
+  document.getElementById('clipCount').textContent=data.length;
+  badge.style.display='inline'; badge.textContent=data.length;
 
-  empty.style.display = 'none';
-  container.style.display = 'flex';
-  bar.classList.add('on');
-  document.getElementById('clipCount').textContent = data.length;
-  badge.style.display = 'inline'; badge.textContent = data.length;
-
-  container.innerHTML = data.map((c, i) => {
-    const cat   = c.category || 'insight';
-    const score = Math.min(10, Math.max(1, c.virality_score || 7));
+  el.innerHTML = data.map((c,i) => {
+    const cat=c.category||'insight', score=Math.min(10,Math.max(1,c.virality_score||7));
     return `
-    <div class="clip-card" style="animation-delay:${i*.09}s">
-      <div class="clip-header">
-        <div class="clip-rank">${c.rank || i+1}</div>
-        <div class="clip-title-g">
+    <div class="clip" style="animation-delay:${i*.08}s">
+      <div class="clip-head">
+        <div class="clip-rank">${c.rank||i+1}</div>
+        <div class="clip-tg">
           <div class="clip-title">${esc(c.title||'Untitled')}</div>
           <div class="clip-ts">
             <span>${c.start||'—'}</span>
-            <span style="color:var(--muted);font-size:10px">▶</span>
+            <span style="color:var(--muted);font-size:9px">▶</span>
             <span>${c.end||'—'}</span>
             <span class="clip-dur">${c.duration_sec||'?'}s</span>
           </div>
         </div>
-        <div class="clip-meta">
-          <span class="cat-badge cat-${cat}">${cat}</span>
-          <div class="v-row">
-            <span class="v-label">${score}/10</span>
-            <div class="v-track"><div class="v-fill" style="width:${score*10}%"></div></div>
+        <div class="clip-mt">
+          <span class="cat cat-${cat}">${cat}</span>
+          <div class="vrow">
+            <span class="vl">${score}/10</span>
+            <div class="vt"><div class="vf" style="width:${score*10}%"></div></div>
           </div>
         </div>
       </div>
       <div class="clip-body">
-        <div class="clip-field">
-          <span class="field-label">🎣 Hook</span>
-          <div class="hook-text">${esc(c.hook||'—')}</div>
-        </div>
-        <div class="clip-field">
-          <span class="field-label">💡 Why It Works</span>
-          <div class="why-text">${esc(c.why||'—')}</div>
-        </div>
-        <div class="clip-field">
-          <span class="field-label">📱 Caption</span>
-          <div class="caption-text">${esc(c.caption||'—')}</div>
-        </div>
+        <div class="cf"><span class="fl">🎣 Hook</span><div class="hook">${esc(c.hook||'—')}</div></div>
+        <div class="cf"><span class="fl">💡 Why It Works</span><div class="why">${esc(c.why||'—')}</div></div>
+        <div class="cf"><span class="fl">📱 Caption</span><div class="caption">${esc(c.caption||'—')}</div></div>
       </div>
-      <div class="clip-footer">
-        <button class="btn-sm" onclick="cpDetails(${i})">Copy Details</button>
-        <button class="btn-sm acc" id="cb${i}" onclick="cpCaption(${i})">Copy Caption ↗</button>
+      <div class="clip-foot">
+        <button class="btn btn-ghost btn-sm" onclick="cpDetails(${i})">Copy Details</button>
+        <button class="btn btn-accent btn-sm" id="cb${i}" onclick="cpCaption(${i})">Copy Caption ↗</button>
       </div>
     </div>`;
   }).join('');
 }
 
-/* ─────────────────────────────────────────────
-   HELPERS
-───────────────────────────────────────────── */
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function showError(msg){ const b=document.getElementById('errorBox'); b.textContent=msg; b.classList.add('on'); }
-function hideError(){ document.getElementById('errorBox').classList.remove('on'); }
-
-function cpCaption(i){ navigator.clipboard.writeText(clips[i]?.caption||'').then(()=>{ const b=document.getElementById('cb'+i); b.textContent='Copied! ✓'; setTimeout(()=>b.textContent='Copy Caption ↗',2000); }); }
-function cpDetails(i){ const c=clips[i]; navigator.clipboard.writeText(`CLIP #${c.rank}: ${c.title}\nTimestamps: ${c.start} → ${c.end} (${c.duration_sec}s)\nCategory: ${c.category} | Virality: ${c.virality_score}/10\n\nHOOK:\n${c.hook}\n\nWHY IT WORKS:\n${c.why}\n\nCAPTION:\n${c.caption}`).then(()=>toast('Copied!')); }
-function cpAllCaptions(){ navigator.clipboard.writeText(clips.map(c=>c.caption).join('\n\n---\n\n')).then(()=>toast('All captions copied!')); }
-function cpJSON(){ navigator.clipboard.writeText(JSON.stringify(clips,null,2)).then(()=>toast('JSON copied!')); }
+/* ══════════════════════════════════════════════
+   UTILS
+══════════════════════════════════════════════ */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function showErr(m){const b=document.getElementById('errBox');b.textContent=m;b.classList.add('on')}
+function hideErr(){document.getElementById('errBox').classList.remove('on')}
+function cpCaption(i){navigator.clipboard.writeText(clips[i]?.caption||'').then(()=>{const b=document.getElementById('cb'+i);b.textContent='Copied! ✓';setTimeout(()=>b.textContent='Copy Caption ↗',2000)})}
+function cpDetails(i){const c=clips[i];navigator.clipboard.writeText(`CLIP #${c.rank}: ${c.title}\n${c.start} → ${c.end} (${c.duration_sec}s) | ${c.category} | ${c.virality_score}/10\n\nHOOK: ${c.hook}\n\nWHY: ${c.why}\n\nCAPTION: ${c.caption}`).then(()=>toast('Copied!'))}
+function cpAllCaptions(){navigator.clipboard.writeText(clips.map(c=>c.caption).join('\n\n---\n\n')).then(()=>toast('All captions copied!'))}
+function cpJSON(){navigator.clipboard.writeText(JSON.stringify(clips,null,2)).then(()=>toast('JSON copied!'))}
 function expMD(){
-  const md=`# ClipWise AI — Extracted Clips\n_${new Date().toLocaleString()}_\n\n`+clips.map(c=>`## Clip #${c.rank}: ${c.title}\n**Timestamps:** ${c.start} → ${c.end} (${c.duration_sec}s)\n**Category:** ${c.category} | **Virality:** ${c.virality_score}/10\n\n**Hook:**\n> ${c.hook}\n\n**Why It Works:**\n${c.why}\n\n**Caption:**\n\`\`\`\n${c.caption}\n\`\`\`\n\n---`).join('\n\n');
-  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([md],{type:'text/markdown'})); a.download='clipwise-clips.md'; a.click(); toast('Exported!');
+  const md=`# ClipWise — Clips\n_${new Date().toLocaleString()}_\n\n`+clips.map(c=>`## #${c.rank}: ${c.title}\n**${c.start} → ${c.end}** (${c.duration_sec}s) · ${c.category} · ${c.virality_score}/10\n\n> ${c.hook}\n\n${c.why}\n\n\`${c.caption}\`\n\n---`).join('\n\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([md],{type:'text/markdown'}));a.download='clipwise.md';a.click();toast('Exported!')
 }
-function toast(msg){ const t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),3000); }
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),3000)}
 </script>
 </body>
 </html>
